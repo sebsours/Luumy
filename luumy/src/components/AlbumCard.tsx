@@ -14,8 +14,8 @@ export default function AlbumCard()
                     <span className='text-sm'>Wesley's Theory</span>
                 </div>
 
-                <div className='flex justify-between'>
-                    <button ><NotesIcon className='hover:bg-slate-400 transition rounded'/></button>
+                <div className='flex justify-between'>  
+                    <button disabled><NotesIcon className='hover:bg-slate-400 transition rounded'/></button>
                     <span className='self-center pr-4 text-xl font-semibold'>10</span>
                 </div>
             </div>
