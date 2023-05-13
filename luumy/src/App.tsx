@@ -1,16 +1,17 @@
 import React from 'react';
-import Navbar from './components/Navbar';
+import Home from './components/Home';
+import { Routes, Route } from 'react-router-dom';
+import AlbumCard from './components/AlbumCard';
 import AlbumList from './components/AlbumList';
+
 
 
 function App() {
   return (
-    <div>
-      <Navbar/>
-      <div className='bg-purple-100 h-screen'>
-        <AlbumList/>
-      </div>
-    </div>
+    <Routes>
+      <Route path='/' element={<Home />}/>
+      {/* <Route path='/search/:query' element={<AlbumList/>} /> */}
+    </Routes>
     
   );
 }
