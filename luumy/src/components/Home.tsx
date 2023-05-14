@@ -1,16 +1,19 @@
 import Navbar from './Navbar';
 import AlbumList from './AlbumList';
 import SearchModal from './SearchModal';
+import { useState } from 'react';
 
 export default function Home()
 {
+    const [modalOpen, setModalOpen] = useState(false);
+
     return (
         <div>
-            <Navbar/>
+            <Navbar openModal={() => setModalOpen(true)}/>
             <div className='bg-purple-100 h-screen'>
                 {/* <AlbumList/> */}
             </div>
-            <SearchModal/>
+            <SearchModal isVisible={modalOpen} closeModal={() => setModalOpen(false)}/>
         </div>
         
     )

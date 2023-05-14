@@ -2,12 +2,19 @@ import SearchIcon from '@mui/icons-material/Search';
 import SearchCard from './searchCard';
 import { useState } from 'react';
 import axios from 'axios';
+import { isVisible } from '@testing-library/user-event/dist/utils';
 
-export default function SearchModal(){
+interface SearchModalProps
+{
+    isVisible: boolean;
+    closeModal: () => void;
+}
+
+export default function SearchModal(props:SearchModalProps){
     const [search, setSearch] = useState('');
     const [searchCards, setCards] = useState([]);
 
-    // need a useEffect to rerender the search results
+    // may need a useEffect to rerender the search results
 
     const handleSearch = async () => {
         if (search)
@@ -27,21 +34,8 @@ export default function SearchModal(){
     }
 
     const handleGetAlbumInfo = async (album: any) => {
-        // What i need:
-            // album_type (to show only albums)
-            // href (to make it easier to access that specific album's endpoint)
-            // images (need to check the size for it to be consistent)
-            //     - gives an array of images with: url of Image, height, and width in pixels
-            // name (name of album)
-            // artist
-            //     - gives an array of objects: need the name of artist from here
-            //      - the artist also gives an href/spotify_id of artist and you can extract genre from there
-            
-            // maybe need:
-            // release date
+        
         album = album.albums;
-        // console.log(album);
-
         const searchResults:any = [];
         
         album.items.forEach((item:any, index:number) => {
@@ -66,9 +60,14 @@ export default function SearchModal(){
         console.log(searchCards.length);
     }
 
+    const handleClose = (e:any) => { 
+        if (e.target.id === 'close') props.closeModal()}
+
+    if (!props.isVisible) return null;
+
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-[2px] pt-20 px-40">
-            <div className='flex justify-center'>
+        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-[2px] pt-20 px-40" id='close' onClick={handleClose}>
+            <div className='flex justify-center' id='close' onClick={handleClose}>
                 <div className='w-1/3 mb-4 h-full border border-gray-500 rounded-md'>
 
                     <input type="text" placeholder='Albums, Artists'
@@ -82,9 +81,10 @@ export default function SearchModal(){
 
                     <button className='w-1/12' onClick={handleSearch}><SearchIcon/></button>
                 </div>
+                <button id='close' onClick={handleClose} className='pl-5 pb-5 text-4xl'>X</button>
             </div>
             
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-4" id='close' onClick={handleClose}>
                 {searchCards}
             </div>
         </div>
