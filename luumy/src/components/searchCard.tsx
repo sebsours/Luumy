@@ -1,9 +1,4 @@
-// interface ImageObject
-// {
-//     url: string;
-//     height: number;
-//     width: number;
-// }
+import AddIcon from '@mui/icons-material/Add';
 
 interface AlbumData
 {
@@ -18,14 +13,20 @@ interface AlbumData
 
 const SearchCard: React.FC<AlbumData> = (props: AlbumData) => {
     return (
-        <div className="grid rounded-md h-full" >
+        <div className="grid rounded-md relative group"  >
             <div className="">
-                <img className='rounded-l-md' src={props.images[1].url} alt="Album Cover"/>
+                <img className='rounded-md rounded-b-none' src={props.images[1].url} alt="Album Cover"/>
             </div>
-            <div className="">
-               <span className="">{`${props.name} - ${props.artists[0].name}`}</span>
+            <div className='bg-slate-400'>
+               <span className='overflow-hidden'>{`${props.name} - ${props.artists[0].name}`}</span>
             </div>
-
+            {/* <button className='absolute end-0'><AddIcon/></button> */}
+            <button 
+                className='fixed bg-zinc-600 w-12 h-12 rounded-full mt-1.5 ml-1.5 invisible transition 
+                group-hover:visible flex justify-center items-center
+                hover:bg-zinc-400'>
+                <AddIcon/>
+            </button>
 
 
         </div>

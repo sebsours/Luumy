@@ -2,7 +2,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import SearchCard from './searchCard';
 import { useState } from 'react';
 import axios from 'axios';
-import { isVisible } from '@testing-library/user-event/dist/utils';
 
 interface SearchModalProps
 {
@@ -34,7 +33,7 @@ export default function SearchModal(props:SearchModalProps){
     }
 
     const handleGetAlbumInfo = async (album: any) => {
-        
+        // setCards(searchCards => []);
         album = album.albums;
         const searchResults:any = [];
         
@@ -55,9 +54,10 @@ export default function SearchModal(props:SearchModalProps){
                 console.log('pusheed');
             }
         })
-        console.log(searchResults);
-        setCards(searchCards.concat(searchResults));
-        console.log(searchCards.length);
+        
+        setCards((searchCards) => [].concat(searchResults));
+        
+        
     }
 
     const handleClose = (e:any) => { 
@@ -66,8 +66,8 @@ export default function SearchModal(props:SearchModalProps){
     if (!props.isVisible) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-[2px] pt-20 px-40" id='close' onClick={handleClose}>
-            <div className='flex justify-center' id='close' onClick={handleClose}>
+        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-[2px] pt-20 px-40 overflow-x-auto scrollbar-thin" id='close' onClick={handleClose}>
+            <div className='flex justify-center' onClick={handleClose}>
                 <div className='w-1/3 mb-4 h-full border border-gray-500 rounded-md'>
 
                     <input type="text" placeholder='Albums, Artists'
