@@ -43,6 +43,18 @@ router.get('/search/:query', async (req, res, next) => {
         .then(response => res.send(response.data))
         .catch(error => console.log(error));
     // res.send(`Searching for... ${req.params.query}`);
-})
+});
+
+router.get('/albumTracks/:albumID', async (req, res, next) => {
+    const url = 'https://api.spotify.com/v1/albums/' + req.params.albumID;
+    await axios.get(url, {
+        headers: {
+            'Authorization': 'Bearer ' + await getAuth(),
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => res.send(response.data))
+        .catch(error => console.log(error));
+});
 
 export default router;
