@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogContentText, TextField } from '@mui/material';
+import { Dialog, DialogContent } from '@mui/material';
+import axios from 'axios';
 
 interface AlbumDialog
 {
@@ -8,16 +9,47 @@ interface AlbumDialog
     name: string;
     image: string;
     artist: string;
+    albumID: string;
 }
 
-
-
 export default function AlbumDialog(props: AlbumDialog){
-    
-    // useEffect(() => {
 
-    //     console.log('I fire once');
-    // }, []);
+    const [tracks, setTracks] = useState([]);
+    
+    // Runs as soon as album card is opened, calling the spotify api
+    // to get the tracks for that album
+    useEffect(() => {
+        async function fetchAlbumTracks()
+        {
+            const url = `http://localhost:8000/spotify/albumTracks/${props.albumID}`;
+            await axios.get(url, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => handleGetAlbumTracks(response.data.tracks))
+                .catch(error => console.log(error));
+        }
+
+
+        fetchAlbumTracks();
+    }, []);
+
+    // Handles getting the tracks of the album and puts them in the dropdown list
+    const handleGetAlbumTracks = (tracks:any) => {
+        const trackNames:any = [];
+
+        trackNames.push(<option key={0} value='0'></option>)
+        
+        tracks.items.forEach((track:any, index:number) => {
+            trackNames.push(
+                <option key={index+1} value={track.name}>{track.name}</option>
+            )
+        })
+
+        setTracks((tracks) => [].concat(trackNames));
+        // console.log(tracks);
+    }
 
     return (
         <div>
@@ -47,13 +79,7 @@ export default function AlbumDialog(props: AlbumDialog){
                             <label htmlFor="favoriteTrack">Favorite Track</label>
                             {/* <input type="text" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='favoriteTrack'/> */}
                             <select name="favoriteTrack" id="favoriteTrack" className='bg-slate-600 w-full rounded-sm text-neutral-100 focus:outline-none p-1'>
-                                <option value="test1">Test1</option>
-                                <option value="test2">Test2</option>
-                                <option value="test3">Test3</option>
-                                <option value="test4">Test4</option>
-                                <option value="test5">Test5</option>
-                                <option value="test6">Test6</option>
-                                <option value="test7">Test7</option>
+                                {tracks}
                             </select>
                         </div>
 

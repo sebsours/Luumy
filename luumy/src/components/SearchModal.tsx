@@ -32,7 +32,7 @@ export default function SearchModal(props:SearchModalProps){
         
     }
 
-    const handleGetAlbumInfo = async (album: any) => {
+    const handleGetAlbumInfo = (album: any) => {
         // setCards(searchCards => []);
         album = album.albums;
         const searchResults:any = [];
@@ -43,7 +43,7 @@ export default function SearchModal(props:SearchModalProps){
                 searchResults.push(
                     <div key={index}>
                         <SearchCard 
-                        href={`${item.href}`} 
+                        albumID={`${item.id}`} 
                         images={item.images} 
                         name={`${item.name}`} 
                         artists={item.artists} 
@@ -51,7 +51,6 @@ export default function SearchModal(props:SearchModalProps){
                     </div>
                     
                 )
-                console.log('pusheed');
             }
         })
         
