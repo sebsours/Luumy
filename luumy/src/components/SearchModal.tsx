@@ -83,7 +83,7 @@ export default function SearchModal(props:SearchModalProps){
                 <button id='close' onClick={handleClose} className='pl-5 pb-5 text-4xl'>X</button>
             </div>
             
-            <div className="grid grid-cols-4 gap-4" id='close' onClick={handleClose}>
+            <div className="grid grid-cols-4 gap-12 mt-6" id='close' onClick={handleClose}>
                 {searchCards}
             </div>
         </div>

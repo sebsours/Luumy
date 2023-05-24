@@ -24,7 +24,7 @@ const SearchCard: React.FC<AlbumData> = (props: AlbumData) => {
     return (
         <div className="grid rounded-md relative group"  >
             <div className="">
-                <img className='' src={props.images[1].url} alt="Album Cover"/>
+                <img className='w-full' src={props.images[0].url} alt="Album Cover"/>
             </div>
             <div className='bg-slate-400'>
                <span className='overflow-hidden'>{`${props.name} - ${props.artists[0].name}`}</span>
