@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+// import { useState, useCallback } from 'react';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 
 export default function Auth(){
@@ -42,7 +42,7 @@ export default function Auth(){
                     </div>
                     
                     <div>
-                        <p>Don't have an account? <span onClick={()=> console.log('hello')} className='text-neutral-100 cursor-pointer'>Create an account</span> </p>
+                        <p>Don't have an account? <span onClick={()=> console.log('hello')} className='text-purple-50 cursor-pointer'>Create an account</span> </p>
                         
                     </div>
 
