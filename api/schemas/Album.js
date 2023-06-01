@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const albumSchema = new mongoose.Schema({
     spotifyID: {
         type: String,
-        required: true
+        required: true,
     },
     favoriteTrack: {
         type: String,
@@ -24,4 +24,4 @@ const albumSchema = new mongoose.Schema({
     // },
 });
 
-module.exports = mongoose.model('Album', albumSchema);
+export default mongoose.model('Album', albumSchema);

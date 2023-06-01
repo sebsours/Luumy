@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import spotify_apis from "./routes/spotify.js";
 import signup_api from "./routes/signup.js";
 import login_api from "./routes/login.js";
+import album_api from "./routes/album.js";
 
 
 dotenv.config();
@@ -37,6 +38,7 @@ app.use(bodyParser.json());
 app.use("/spotify", spotify_apis);
 app.use("/signup", signup_api);
 app.use("/login", login_api);
+app.use("/album", album_api);
 
 // app.get('/', (req, res) => {
 //     res.send('OMG IS THIS SHIT ACTUALLY WORKING?');

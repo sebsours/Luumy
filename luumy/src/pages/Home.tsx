@@ -10,7 +10,7 @@ export default function Home()
     return (
         <div className=''>
             <Navbar openModal={() => setModalOpen(true)}/>
-            <div className='bg-purple-100'>
+            <div className='h-screen bg-purple-200'>
                 {/* <AlbumList/> */}
             </div>
             <SearchModal isVisible={modalOpen} closeModal={() => setModalOpen(false)}/>

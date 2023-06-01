@@ -12,9 +12,9 @@ import { Sign } from 'crypto';
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<Home />}/>
+      <Route path='/' element={<Auth />}/>
       {/* <Route path='/search/:query' element={<AlbumList/>} /> */}
-      <Route path='/login' element={<Auth />}/>
+      <Route path='/home' element={<Home />}/>
       <Route path='/signup' element={<Signup />}/>
     </Routes>
     
