@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
 import axios from 'axios';
-
+import { TokenContext } from '../App';
 interface AlbumDialog
 {
     open: boolean;
@@ -15,6 +15,11 @@ interface AlbumDialog
 export default function AlbumDialog(props: AlbumDialog){
 
     const [tracks, setTracks] = useState([]);
+    const [favoriteTrack, setFavoriteTrack] = useState('');
+    const [score, setScore] = useState(-1);
+    const [notes, setNotes] = useState('');
+
+    const token = useContext(TokenContext);
     
     // Runs as soon as album card is opened, calling the spotify api
     // to get the tracks for that album
@@ -51,6 +56,30 @@ export default function AlbumDialog(props: AlbumDialog){
         // console.log(tracks);
     }
 
+    const handleSaveAlbum = async () => {
+        const saveAlbum = {
+            spotifyID: props.albumID,
+            favoriteTrack: favoriteTrack ? favoriteTrack : undefined,
+            score: score > -1 ? score : undefined,
+            notes: notes ? notes : undefined,
+        };
+
+        const url = 'http://localhost:8000/album/add';
+
+        await axios.post(url, saveAlbum, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then((response) => {
+                console.log(response.data);
+                props.closeDialog();
+            })
+            .catch((error) => {console.log(error)});
+
+       
+    }
+
     return (
         <div>
             <Dialog open={props.open} onClose={props.closeDialog}>
@@ -65,7 +94,7 @@ export default function AlbumDialog(props: AlbumDialog){
                         
                         </div>
 
-                        <button onClick={props.closeDialog }
+                        <button onClick={ handleSaveAlbum }
                             className='bg-violet-500 text-white text-lg rounded px-5 py-0.5'
                         >
                             Save
@@ -78,20 +107,23 @@ export default function AlbumDialog(props: AlbumDialog){
                         <div>
                             <label htmlFor="favoriteTrack">Favorite Track</label>
                             {/* <input type="text" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='favoriteTrack'/> */}
-                            <select name="favoriteTrack" id="favoriteTrack" className='bg-slate-600 w-full rounded-sm text-neutral-100 focus:outline-none p-1'>
+                            <select name="favoriteTrack" id="favoriteTrack" className='bg-slate-600 w-full rounded-sm text-neutral-100 focus:outline-none p-1'
+                            onChange={(e) => {setFavoriteTrack(e.target.value)}}>
                                 {tracks}
                             </select>
                         </div>
 
                         <div>
                             <label htmlFor="score">Score</label>
-                            <input type="number" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='score'/>
+                            <input type="number" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='score' min={0} max={10}
+                            onChange={(e) => {setScore(e.target.valueAsNumber)}}/>
                         </div>
                         
                         <div className='col-span-2'>
                             <label htmlFor="notes">Notes</label>
                             {/* <input type="text" className='bg-slate-500 w-full rounded-sm resize-y' id='notes'/> */}
-                            <textarea id="notes" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none'></textarea>
+                            <textarea id="notes" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' 
+                            onChange={(e) => setNotes(e.target.value)}></textarea>
                         </div>
                         
                 

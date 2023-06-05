@@ -4,11 +4,15 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function Auth(){
+interface AuthProps
+{
+    handleToken: (token:string) => void;
+}
+
+export default function Auth(props: AuthProps){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    
 
     const handleLogin = async () => {
         if (username && password)
@@ -18,8 +22,9 @@ export default function Auth(){
                 username: username,
                 password: password
             })
-                .then((response):any => {
+                .then((response) => {
                     console.log(response.data);
+                    props.handleToken(response.data.token);
                     navigate("/home");
                 })
                 .catch((error):any => {
@@ -70,7 +75,7 @@ export default function Auth(){
                     </div>
                     
                     <div>
-                        <p>Don't have an account? <span onClick={()=> console.log('hello')} className='text-purple-50 cursor-pointer'>Create an account</span> </p>
+                        <p>Don't have an account? <span onClick={()=> navigate('/signup')} className='text-purple-50 cursor-pointer'>Create an account</span> </p>
                         
                     </div>
 
