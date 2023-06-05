@@ -7,7 +7,6 @@ import authenticateToken from '../authentication/authToken.js';
 const router = express.Router();
 
 router.post('/add', authenticateToken, async (req, res) => {
-
     try {
 
         const album = new Album({
@@ -20,6 +19,7 @@ router.post('/add', authenticateToken, async (req, res) => {
         await album.save();
 
         // Find a way to check for duplicates based on the spotifyID
+        //already checking for duplciates?
         await User.findOneAndUpdate(
             { _id: req.user.id },
             { $push: { albumList: album } },
@@ -31,12 +31,13 @@ router.post('/add', authenticateToken, async (req, res) => {
         res.status(200).send(album);
 
     } catch (error) {
-        res.send(400).send(error);
+        res.send(error);
     }
-
-
-
 });
+
+router.get('/getAlbums', authenticateToken, async (req, res) => {
+
+})
 
 
 export default router;
