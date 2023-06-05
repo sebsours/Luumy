@@ -12,7 +12,7 @@ const auth_token = Buffer.from(client_id + ":" + client_secret, 'utf-8').toStrin
 
 // Get the access_token to access the other spotify APIs
 // !! NOTE access token expires after 1 hour
-const getAuth = async () => {
+export const getAuth = async () => {
     const url = 'https://accounts.spotify.com/api/token';
     try {
         const response = await axios.post(url, {
@@ -26,6 +26,7 @@ const getAuth = async () => {
         // console.log(response.data);
         return response.data.access_token;
     } catch (error) {
+
         console.log(error);
     }
 };
@@ -56,5 +57,6 @@ router.get('/albumTracks/:albumID', async (req, res, next) => {
         .then(response => res.send(response.data))
         .catch(error => console.log(error));
 });
+
 
 export default router;
