@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
 import axios from 'axios';
 import { TokenContext } from '../App';
+import { AlbumContext } from '../pages/Home';
 interface AlbumDialog
 {
     open: boolean;
@@ -20,6 +21,7 @@ export default function AlbumDialog(props: AlbumDialog){
     const [notes, setNotes] = useState('');
 
     const token = useContext(TokenContext);
+    const toggleUpdate = useContext(AlbumContext);
     
     // Runs as soon as album card is opened, calling the spotify api
     // to get the tracks for that album
@@ -74,6 +76,7 @@ export default function AlbumDialog(props: AlbumDialog){
             .then((response) => {
                 console.log(response.data);
                 props.closeDialog();
+                toggleUpdate();
             })
             .catch((error) => {console.log(error)});
 
