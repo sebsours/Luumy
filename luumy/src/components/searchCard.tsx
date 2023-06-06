@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from 'react';
-import AlbumDialog from './AlbumDialog';
+import AlbumDialog from './SearchAlbumDialog';
 
 interface AlbumData
 {

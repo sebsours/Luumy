@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
 import axios from 'axios';
 import { TokenContext } from '../App';
-import { AlbumContext } from '../pages/Home';
+import { AlbumContext } from '../pages/UserList';
 interface AlbumDialog
 {
     open: boolean;

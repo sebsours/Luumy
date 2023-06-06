@@ -56,9 +56,9 @@ router.post('/add', authenticateToken, async (req, res) => {
     }
 });
 
-router.get('/getAlbums', authenticateToken, async (req, res) => {
+router.post('/getAlbums', async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
+        const user = await User.findOne({ username: req.body.username });
 
         const spotifyToken = await getAuth();
 

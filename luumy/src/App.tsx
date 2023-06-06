@@ -1,9 +1,9 @@
 import React from 'react';
-import Home from './pages/Home';
+import UserList from './pages/UserList';
 import Auth from './pages/Auth';
 import Signup from './pages/Signup';
 import { Routes, Route } from 'react-router-dom';
-import { Sign } from 'crypto';
+
 // import AlbumCard from './components/AlbumCard';
 // import AlbumList from './components/AlbumList';
 export const TokenContext = React.createContext<string | null>(null);
@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Auth handleToken={handleToken}/>}/>
         {/* <Route path='/search/:query' element={<AlbumList/>} /> */}
-        <Route path='/home' element={<Home />}/>
+        <Route path='/user/:username' element={<UserList />}/>
         <Route path='/signup' element={<Signup />}/>
       </Routes>
     </TokenContext.Provider>

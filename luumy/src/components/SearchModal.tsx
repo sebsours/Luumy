@@ -1,5 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
-import SearchCard from './searchCard';
+import { Dialog, DialogContent } from '@mui/material';
+import SearchCard from './SearchCard';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -65,27 +66,33 @@ export default function SearchModal(props:SearchModalProps){
     if (!props.isVisible) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-[2px] pt-20 px-40 overflow-x-auto scrollbar-thin" id='close' onClick={handleClose}>
-            <div className='flex justify-center' onClick={handleClose}>
-                <div className='w-1/3 mb-4 h-full border border-gray-500 rounded-md'>
+        <div>
+            <Dialog open={props.isVisible} onClose={props.closeModal} fullWidth={true} maxWidth={'lg'} >
+                <DialogContent className='bg-purple-900'>
+                    <div className='flex justify-center' >
+                        <div className='w-1/2 mb-4 border border-purple-500 rounded-md'>
 
-                    <input type="text" placeholder='Albums, Artists'
-                        className='w-11/12 pl-2 py-2.5 bg-transparent focus:outline-none placeholder-gray-500'
-                        onChange={(e) => {setSearch(e.target.value)}}
-                        onKeyDown={(event) => {
-                            if (event.key === 'Enter'){
-                                handleSearch();
-                            }
-                        }}/>
+                            <input type="text" placeholder='Albums, Artists'
+                                className='w-11/12 pl-2 py-2.5 bg-transparent focus:outline-none '
+                                onChange={(e) => {setSearch(e.target.value)}}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter'){
+                                        handleSearch();
+                                    }
+                                }}/>
 
-                    <button className='w-1/12' onClick={handleSearch}><SearchIcon/></button>
-                </div>
-                <button id='close' onClick={handleClose} className='pl-5 pb-5 text-4xl'>X</button>
-            </div>
+                            <button className='w-1/12' onClick={handleSearch}><SearchIcon className='text-purple-500'/></button>
+                        </div>
+                        {/* <button className='pl-5 pb-5 text-4xl'>X</button> */}
+                    </div>
+                    
+                    <div className="grid grid-cols-4 gap-12 mt-6">
+                        {searchCards}
+                    </div>
+                </DialogContent>
+                
+            </Dialog>
             
-            <div className="grid grid-cols-4 gap-12 mt-6" id='close' onClick={handleClose}>
-                {searchCards}
-            </div>
         </div>
     )
 }

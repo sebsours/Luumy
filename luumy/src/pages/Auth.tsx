@@ -25,7 +25,7 @@ export default function Auth(props: AuthProps){
                 .then((response) => {
                     console.log(response.data);
                     props.handleToken(response.data.token);
-                    navigate("/home");
+                    navigate(`/user/${response.data.userInfo.username}`);
                 })
                 .catch((error):any => {
                     console.log(error);

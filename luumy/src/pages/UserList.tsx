@@ -5,12 +5,14 @@ import SearchModal from '../components/SearchModal';
 import { useState, useEffect, createContext, useContext } from 'react';
 import { TokenContext } from '../App';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 export const AlbumContext = createContext<any>(null);
 
 export default function Home()
 {   
     const [updateAlbumList, setUpdateAlbumList] = useState('toggle');
+    const params = useParams();
 
     const toggleUpdate = () => {
         setUpdateAlbumList(updateAlbumList => (updateAlbumList === 'toggle' ? 'retoggle' : 'toggle'));
@@ -22,14 +24,16 @@ export default function Home()
     const [userAlbums, setUserAlbums] = useState([]);
 
     useEffect(() => {
-        
+        console.log(params);
         async function fetchUserAlbums()
         {
             const url = 'http://localhost:8000/album/getAlbums';
-            await axios.get(url, {
+            await axios.post(url, {username: params.username} , {
                 headers: {
-                    'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json'
+                },
+                params: {
+                    username: params.username
                 }
             })
                 .then(response => handleUserAlbums(response.data))

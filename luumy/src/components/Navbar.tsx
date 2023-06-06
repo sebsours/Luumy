@@ -22,7 +22,7 @@ export default function Navbar(props:NavbarProps)
                 <span>Albums, Artists</span>
                 <SearchIcon className=' hover:text-gray-500 transition duration-700 '/>
             </div> */}
-            <button className='w-1/3 flex justify-between bg-white' onClick={props.openModal}>
+            <button className='w-1/3 flex justify-between rounded bg-purple-300 border border-purple-200 p-1' onClick={props.openModal}>
                 <span>Albums, Artists</span>
                 <SearchIcon />
             </button>
