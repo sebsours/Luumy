@@ -46,11 +46,14 @@ router.post('/', async (req, res) => {
         // send the user object back with a jwt token
         // payload can be accessed throw jwt.verify(token, process.env.ACCESS_TOKEN)
         const token = jwt.sign(userInfo, process.env.ACCESS_TOKEN, {
-            expiresIn: '1h'
+            expiresIn: '1hr'
         });
 
-
-        res.status(200).json({ userInfo, token });
+        await res.cookie("token", token, {
+            httpOnly: true
+        });
+        console.log(req.cookies)
+        res.status(200).json({ userInfo });
 
     } catch (error) {
         res.status(error.statusCode).send(error.message);

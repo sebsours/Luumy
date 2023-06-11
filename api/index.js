@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 
 import spotify_apis from "./routes/spotify.js";
 import signup_api from "./routes/signup.js";
@@ -30,19 +31,16 @@ const app = express();
 const port = process.env.PORT;
 // const spotify_token_data = await getAuth();
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // endpoints that use the spotify api
 app.use("/spotify", spotify_apis);
 app.use("/signup", signup_api);
 app.use("/login", login_api);
 app.use("/album", album_api);
-
-// app.get('/', (req, res) => {
-//     res.send('OMG IS THIS SHIT ACTUALLY WORKING?');
-// })
 
 app.listen(port, () => {
     console.log(`API listening on port ${port}`);

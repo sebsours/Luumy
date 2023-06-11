@@ -68,11 +68,7 @@ export default function AlbumDialog(props: AlbumDialog){
 
         const url = 'http://localhost:8000/album/add';
 
-        await axios.post(url, saveAlbum, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
+        await axios.post(url, saveAlbum, {withCredentials: true})
             .then((response) => {
                 console.log(response.data);
                 props.closeDialog();

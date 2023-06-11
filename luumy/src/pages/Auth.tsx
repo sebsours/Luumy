@@ -21,7 +21,7 @@ export default function Auth(props: AuthProps){
             await axios.post(url, {
                 username: username,
                 password: password
-            })
+            }, { withCredentials: true, })
                 .then((response) => {
                     console.log(response.data);
                     props.handleToken(response.data.token);

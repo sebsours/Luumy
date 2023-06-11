@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 
 export const AlbumContext = createContext<any>(null);
 
-export default function Home()
+export default function UserList()
 {   
     const [updateAlbumList, setUpdateAlbumList] = useState('toggle');
     const params = useParams();
