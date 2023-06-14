@@ -3,6 +3,7 @@ import { Dialog, DialogContent } from '@mui/material';
 import axios from 'axios';
 import { TokenContext } from '../App';
 import { AlbumContext } from '../pages/UserList';
+import { useNavigate } from 'react-router-dom';
 interface AlbumDialog
 {
     open: boolean;
@@ -22,6 +23,7 @@ export default function AlbumDialog(props: AlbumDialog){
 
     const token = useContext(TokenContext);
     const toggleUpdate = useContext(AlbumContext);
+    const navigate = useNavigate();
     
     // Runs as soon as album card is opened, calling the spotify api
     // to get the tracks for that album
@@ -35,7 +37,10 @@ export default function AlbumDialog(props: AlbumDialog){
                 }
             })
                 .then(response => handleGetAlbumTracks(response.data.tracks))
-                .catch(error => console.log(error));
+                .catch(error => {
+                    console.log("This is the error", error);
+    
+                });
         }
 
 
@@ -74,7 +79,11 @@ export default function AlbumDialog(props: AlbumDialog){
                 props.closeDialog();
                 toggleUpdate();
             })
-            .catch((error) => {console.log(error)});
+            .catch((error) => {
+                console.log("I AM THE ERROR HAHAHA", error);
+                // Maybe change this
+                navigate("/");
+            });
 
        
     }

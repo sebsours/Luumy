@@ -29,8 +29,8 @@ const router = express.Router();
 
 router.post('/add', authenticateToken, async (req, res) => {
     try {
-
         const album = new Album({
+            userID: req.user.id,
             spotifyID: req.body.spotifyID,
             favoriteTrack: req.body.favoriteTrack,
             score: req.body.score,
@@ -52,6 +52,7 @@ router.post('/add', authenticateToken, async (req, res) => {
         res.status(200).send(album);
 
     } catch (error) {
+        console.log(error);
         res.send(error);
     }
 });

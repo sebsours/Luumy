@@ -50,9 +50,10 @@ router.post('/', async (req, res) => {
         });
 
         await res.cookie("token", token, {
-            httpOnly: true
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 // 1hr
         });
-        console.log(req.cookies)
+
         res.status(200).json({ userInfo });
 
     } catch (error) {
