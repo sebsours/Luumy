@@ -5,6 +5,7 @@ import SearchModal from '../components/SearchModal';
 import { useState, useEffect, createContext, useContext } from 'react';
 import { TokenContext } from '../App';
 import axios from 'axios';
+import { Avatar } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 export const AlbumContext = createContext<any>(null);
@@ -69,7 +70,35 @@ export default function UserList()
         <div className=''>
             <Navbar openModal={() => setModalOpen(true)}/>
             <div className='h-screen bg-purple-200'>
-                <AlbumList UserAlbumList={userAlbums}/>
+                <div>
+                    <ul className='py-10 pl-32 flex items-end gap-12'>
+                        <li className='flex items-end'>
+                            {/* <Avatar sx={{ width: 70, height:70}}>{params.username?.slice(0,1).toUpperCase()}</Avatar> */}
+                            <div className='bg-slate-400 h-48 w-36 flex justify-center items-center'>
+                                <span className='text-7xl'>{params.username?.slice(0,1).toUpperCase()}</span>
+                            </div>
+                            <span className='pl-3.5 text-lg'>{params.username}</span>
+                        </li>
+                        <li>
+                            <input type="text" placeholder='Filter'/>
+                        </li>
+                        <li>
+                            <select name="sort" id="sort">
+                                <option value="Score">Score</option>
+                                <option value="Title">Title</option>
+                                <option value="Artist">Artist</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                
+                
+
+                
+                <div className='px-32'>
+                    <AlbumList UserAlbumList={userAlbums}/>
+                </div>
+                
             </div>
             <AlbumContext.Provider value={toggleUpdate} >
                 <SearchModal isVisible={modalOpen} closeModal={() => setModalOpen(false)}/>
