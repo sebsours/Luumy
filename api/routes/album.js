@@ -29,27 +29,36 @@ const router = express.Router();
 
 router.post('/add', authenticateToken, async (req, res) => {
     try {
-        const album = new Album({
-            userID: req.user.id,
-            spotifyID: req.body.spotifyID,
-            favoriteTrack: req.body.favoriteTrack,
-            score: req.body.score,
-            notes: req.body.notes,
-        });
 
-        await album.save();
+        const albumExists = await Album.findOne({ spotifyID: req.body.spotifyID, userID: req.user.id });
 
-        // Find a way to check for duplicates based on the spotifyID
-        //already checking for duplciates?
-        await User.findOneAndUpdate(
-            { _id: req.user.id },
-            { $push: { albumList: album } },
+        // console.log(albumExists);
 
-        );
+        if (!albumExists) {
+            const album = new Album({
+                userID: req.user.id,
+                spotifyID: req.body.spotifyID,
+                favoriteTrack: req.body.favoriteTrack,
+                score: req.body.score,
+                notes: req.body.notes,
+            });
+
+            await album.save();
+
+            await User.findOneAndUpdate(
+                { _id: req.user.id },
+                { $push: { albumList: album } },
+
+            );
+
+            res.status(200).send(album);
+        }
+        else {
+            throw new Error("Album already in list");
+        }
 
 
-        // console.log(req.user.id);
-        res.status(200).send(album);
+
 
     } catch (error) {
         console.log(error);
