@@ -8,22 +8,36 @@ import axios from 'axios';
 import { Avatar } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
+interface albumObj
+{
+    
+    favoriteTrack?:string,
+    score?:string,
+    notes?:string,
+    image:string,
+    name:string,
+    artistName:string
+}
+
 export const AlbumContext = createContext<any>(null);
 
 export default function UserList()
 {   
+    const [modalOpen, setModalOpen] = useState(false);
+    const [userAlbums, setUserAlbums] = useState([]);
+    const [userAlbumsDivs, setUserAlbumsDivs] = useState([]);
     const [updateAlbumList, setUpdateAlbumList] = useState('toggle');
+    const [sortCriteria, setSortCriteria] = useState('Score');
+
     const params = useParams();
 
     const toggleUpdate = () => {
         setUpdateAlbumList(updateAlbumList => (updateAlbumList === 'toggle' ? 'retoggle' : 'toggle'));
-    }
+    }    
 
-    const [modalOpen, setModalOpen] = useState(false);
-
-    const token = useContext(TokenContext);
-    const [userAlbums, setUserAlbums] = useState([]);
-
+    // Runs on initial render or when user adds an album to their list
+    // It also runs when a user adds an album to their list but are on a different page
+    // i.e. recalls the api when it shouldnt have to
     useEffect(() => {
         console.log(params);
         async function fetchUserAlbums()
@@ -37,7 +51,10 @@ export default function UserList()
                     username: params.username
                 }
             })
-                .then(response => handleUserAlbums(response.data))
+                .then(response => {
+                    setUserAlbums(response.data);
+                    handleUserAlbums(response.data)
+                })
                 .catch(error => console.log(error));
         }
 
@@ -45,8 +62,41 @@ export default function UserList()
         fetchUserAlbums();
     }, [updateAlbumList]);
 
-    const handleUserAlbums = (albums:any) => {
-        console.log(albums);
+    // When a user changes the sorting option, this useEffect will run
+    useEffect(() => {
+        handleUserAlbums(userAlbums);
+    }, [sortCriteria])
+
+    const handleUserAlbums = (albums:albumObj[]) => {
+        if (sortCriteria === 'Score') {
+            albums.sort((a:albumObj, b:albumObj) => {
+                let num1 = parseFloat(a.score ? a.score : '0');
+                let num2 = parseFloat(b.score ? b.score : '0');
+
+                return num2 - num1;
+            });
+
+        } else if (sortCriteria === 'Title') {
+            albums.sort((a:albumObj, b:albumObj) => {
+                let title1 = a.name.toUpperCase();
+                let title2 = b.name.toUpperCase();
+
+                if (title1 < title2) { return -1; }
+                else if (title1 > title2) { return 1; }
+                else { return 0; }
+                
+            });
+        } else {
+            albums.sort((a:albumObj, b:albumObj) => {
+                let artist1 = a.artistName.toUpperCase();
+                let artist2 = b.artistName.toUpperCase();
+
+                if (artist1 < artist2) { return -1; }
+                else if (artist1 > artist2) { return 1; }
+                else { return 0; }
+                
+            });
+        }
         const albumComponents:any = [];
         
         albums.forEach((album:any, index:number) => {
@@ -61,19 +111,18 @@ export default function UserList()
                 
             )
         });
-        console.log(albumComponents)
-        setUserAlbums((userAlbums) => [].concat(albumComponents));
+
+        setUserAlbumsDivs((userAlbumsDivs) => [].concat(albumComponents));
         
     }
 
     return (
-        <div className=''>
+        <div className='h-full'>
             <Navbar openModal={() => setModalOpen(true)}/>
-            <div className='h-screen bg-purple-200'>
+            <div className='h-full bg-purple-200'>
                 <div>
                     <ul className='py-10 pl-32 flex items-end gap-12'>
                         <li className='flex items-end'>
-                            {/* <Avatar sx={{ width: 70, height:70}}>{params.username?.slice(0,1).toUpperCase()}</Avatar> */}
                             <div className='bg-slate-400 h-48 w-36 flex justify-center items-center'>
                                 <span className='text-7xl'>{params.username?.slice(0,1).toUpperCase()}</span>
                             </div>
@@ -83,7 +132,7 @@ export default function UserList()
                             <input type="text" placeholder='Filter'/>
                         </li>
                         <li>
-                            <select name="sort" id="sort">
+                            <select name="sort" id="sort" onChange={(e) => {setSortCriteria(e.target.value)}}>
                                 <option value="Score">Score</option>
                                 <option value="Title">Title</option>
                                 <option value="Artist">Artist</option>
@@ -95,8 +144,8 @@ export default function UserList()
                 
 
                 
-                <div className='px-32'>
-                    <AlbumList UserAlbumList={userAlbums}/>
+                <div className='px-32 pb-10'>
+                    <AlbumList UserAlbumList={userAlbumsDivs}/>
                 </div>
                 
             </div>

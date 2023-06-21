@@ -77,6 +77,8 @@ export default function AlbumDialog(props: AlbumDialog){
             .then((response) => {
                 console.log(response.data);
                 props.closeDialog();
+                
+                // Maybe have a checker here to see what page you are on to prevent unnecessary recalls to the api?
                 toggleUpdate();
             })
             .catch((error) => {
