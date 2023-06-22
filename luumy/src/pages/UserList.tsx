@@ -28,6 +28,7 @@ export default function UserList()
     const [userAlbumsDivs, setUserAlbumsDivs] = useState([]);
     const [updateAlbumList, setUpdateAlbumList] = useState('toggle');
     const [sortCriteria, setSortCriteria] = useState('Score');
+    const [filterQuery, setFilterQuery] = useState('');
 
     const params = useParams();
 
@@ -65,7 +66,13 @@ export default function UserList()
     // When a user changes the sorting option, this useEffect will run
     useEffect(() => {
         handleUserAlbums(userAlbums);
-    }, [sortCriteria])
+    }, [sortCriteria, filterQuery])
+
+    function filterItems(arr:albumObj[], query:string) {
+        if (!query) return arr;
+        return arr.filter((el:albumObj) => el.name.toLowerCase().includes(query.toLowerCase()) || el.artistName.toLowerCase().includes(query.toLowerCase()));
+        
+    }
 
     const handleUserAlbums = (albums:albumObj[]) => {
         if (sortCriteria === 'Score') {
@@ -97,9 +104,12 @@ export default function UserList()
                 
             });
         }
+
+        const filteredAlbums = filterItems(albums, filterQuery);
+
         const albumComponents:any = [];
         
-        albums.forEach((album:any, index:number) => {
+        filteredAlbums.forEach((album:any, index:number) => {
             albumComponents.push(
                 <div key={index}>
                     <AlbumCard 
@@ -129,7 +139,9 @@ export default function UserList()
                             <span className='pl-3.5 text-lg'>{params.username}</span>
                         </li>
                         <li>
-                            <input type="text" placeholder='Filter'/>
+                            <input type="text" placeholder='Filter' onChange={(e) => {setFilterQuery(e.target.value)}}
+                            />
+
                         </li>
                         <li>
                             <select name="sort" id="sort" onChange={(e) => {setSortCriteria(e.target.value)}}>
