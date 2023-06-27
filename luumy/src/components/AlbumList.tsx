@@ -1,7 +1,6 @@
 import AlbumCard from "./AlbumCard"
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { TokenContext } from '../App';
 
 interface AlbumList
 {

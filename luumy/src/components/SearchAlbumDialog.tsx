@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
 import axios from 'axios';
-import { TokenContext } from '../App';
+import { UserContext } from '../App';
 import { AlbumContext } from '../pages/UserList';
 import { useNavigate } from 'react-router-dom';
+
 interface AlbumDialog
 {
     open: boolean;
@@ -21,7 +22,7 @@ export default function AlbumDialog(props: AlbumDialog){
     const [score, setScore] = useState(-1);
     const [notes, setNotes] = useState('');
 
-    const token = useContext(TokenContext);
+    const userData = useContext(UserContext);
     const toggleUpdate = useContext(AlbumContext);
     const navigate = useNavigate();
     

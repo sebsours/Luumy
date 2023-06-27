@@ -63,6 +63,16 @@ router.post('/', async (req, res) => {
 
 });
 
+router.get('/getCurrentUser', authenticateToken, async (req, res) => {
+    try {
+        const currentUser = req.user;
+        res.status(200).json(currentUser);
+
+    } catch (error) {
+        res.status(400).end();
+    }
+});
+
 
 
 export default router;

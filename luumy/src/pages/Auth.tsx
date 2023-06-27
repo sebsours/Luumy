@@ -1,18 +1,21 @@
 // import { useState, useCallback } from 'react';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../App';
 
 interface AuthProps
 {
-    handleToken: (token:string) => void;
+    handleUserData: (userData:Object) => void;
 }
 
 export default function Auth(props: AuthProps){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    // const userData = useContext(UserContext);
 
     const handleLogin = async () => {
         if (username && password)
@@ -21,10 +24,10 @@ export default function Auth(props: AuthProps){
             await axios.post(url, {
                 username: username,
                 password: password
-            }, { withCredentials: true, })
+            }, {withCredentials: true})
                 .then((response) => {
                     console.log(response.data);
-                    props.handleToken(response.data.token);
+                    props.handleUserData(response.data);
                     navigate(`/user/${response.data.userInfo.username}`);
                 })
                 .catch((error):any => {
@@ -32,8 +35,23 @@ export default function Auth(props: AuthProps){
                 })
             
         }
-        // console.log("wtf");
     }
+    
+    async function checkUser()
+    {
+        const url = 'http://localhost:8000/login/getCurrentUser';
+        await axios.get(url, {withCredentials: true})
+            .then(res => {
+                navigate(`/user/${res.data.username}`);
+            }).catch(reason => {
+                console.log(reason);
+            })
+    }
+
+
+    useEffect(() => {
+        checkUser();
+    }, [])
 
     return (
         <div className="h-screen bg-purple-200 flex justify-center items-center">

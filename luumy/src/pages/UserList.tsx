@@ -3,7 +3,7 @@ import AlbumList from '../components/AlbumList';
 import AlbumCard from '../components/AlbumCard';
 import SearchModal from '../components/SearchModal';
 import { useState, useEffect, createContext, useContext } from 'react';
-import { TokenContext } from '../App';
+import { UserContext } from '../App';
 import axios from 'axios';
 import { Avatar } from '@mui/material';
 import { useParams } from 'react-router-dom';
@@ -34,32 +34,33 @@ export default function UserList()
 
     const toggleUpdate = () => {
         setUpdateAlbumList(updateAlbumList => (updateAlbumList === 'toggle' ? 'retoggle' : 'toggle'));
-    }    
+    }   
+    
+    // const { data: currentUser, isLoading } = useCurrentUser();
 
     // Runs on initial render or when user adds an album to their list
     // It also runs when a user adds an album to their list but are on a different page
     // i.e. recalls the api when it shouldnt have to
-    useEffect(() => {
-        console.log(params);
-        async function fetchUserAlbums()
-        {
-            const url = 'http://localhost:8000/album/getAlbums';
-            await axios.post(url, {username: params.username} , {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                params: {
-                    username: params.username
-                }
+    async function fetchUserAlbums()
+    {
+        const url = 'http://localhost:8000/album/getAlbums';
+        await axios.post(url, {username: params.username} , {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            params: {
+                username: params.username
+            }
+        })
+            .then(response => {
+                setUserAlbums(response.data);
+                handleUserAlbums(response.data)
             })
-                .then(response => {
-                    setUserAlbums(response.data);
-                    handleUserAlbums(response.data)
-                })
-                .catch(error => console.log(error));
-        }
+            .catch(error => console.log(error));
+    }
 
 
+    useEffect(() => {
         fetchUserAlbums();
     }, [updateAlbumList]);
 
@@ -127,7 +128,9 @@ export default function UserList()
     }
 
     return (
+        
         <div className='h-full'>
+            
             <Navbar openModal={() => setModalOpen(true)}/>
             <div className='h-full bg-purple-200'>
                 <div>

@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup()
 {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
 
     const handleSignUp = async (e:React.MouseEvent) => {
         e.preventDefault();
@@ -19,12 +22,31 @@ export default function Signup()
                 password: password
             })
                 .then((response):any => {
-                    console.log(response.data);
+                    handleLogin();
 
                 })
                 .catch((error):any => console.log(error));
         }
 
+    }
+
+    const handleLogin = async () => {
+        if (username && password)
+        {
+            const url = 'http://localhost:8000/login'
+            await axios.post(url, {
+                username: username,
+                password: password
+            }, {withCredentials: true})
+                .then((response) => {
+                    console.log(response.data);
+                    navigate(`/user/${response.data.userInfo.username}`);
+                })
+                .catch((error):any => {
+                    console.log(error);
+                })
+            
+        }
     }
 
     return(

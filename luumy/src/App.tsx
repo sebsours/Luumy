@@ -4,24 +4,30 @@ import Auth from './pages/Auth';
 import Signup from './pages/Signup';
 import { Routes, Route } from 'react-router-dom';
 
+import axios from 'axios';
+
 // import AlbumCard from './components/AlbumCard';
 // import AlbumList from './components/AlbumList';
-export const TokenContext = React.createContext<string | null>(null);
+export const UserContext = React.createContext<Object | null>(null);
 
 function App() {
-  const [token, setToken] = React.useState<string | null>(null);
+  const [userData, setUserData] = React.useState({});
+  const [loggedIn, setLoggedIn] = React.useState(false);
   
-  const handleToken = (userToken:string) => { setToken(userToken); };
+  const handleUserData = (userData:Object) => {
+     setUserData(userData); 
+     setLoggedIn(true);
+  };
 
   return (
-    <TokenContext.Provider value={token}>
+    <UserContext.Provider value={userData}>
       <Routes>
-        <Route path='/' element={<Auth handleToken={handleToken}/>}/>
+        <Route path='/' element={<Auth handleUserData={handleUserData}/>}/>
         {/* <Route path='/search/:query' element={<AlbumList/>} /> */}
         <Route path='/user/:username' element={<UserList />}/>
         <Route path='/signup' element={<Signup />}/>
       </Routes>
-    </TokenContext.Provider>
+    </UserContext.Provider>
     
     
   );
