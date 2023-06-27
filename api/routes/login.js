@@ -73,6 +73,14 @@ router.get('/getCurrentUser', authenticateToken, async (req, res) => {
     }
 });
 
+router.get('/logout', authenticateToken, async (req, res) => {
+    try {
+        res.clearCookie('token').end();
+    } catch (error) {
+        res.status(400).end();
+    }
+});
+
 
 
 export default router;

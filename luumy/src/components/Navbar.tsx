@@ -1,5 +1,9 @@
 import SearchIcon from '@mui/icons-material/Search';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Avatar } from '@mui/material';
+
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 interface NavbarProps
 {
@@ -8,7 +12,8 @@ interface NavbarProps
 
 export default function Navbar(props:NavbarProps)
 {
-    const [username, setUsername] = useState();
+    const [username, setUsername] = useState('');
+    const navigate = useNavigate();
 
     async function fetchUserData()
     {
@@ -26,33 +31,45 @@ export default function Navbar(props:NavbarProps)
     }, [])
 
 
+    const handleLogout = async () => {
+        const url = 'http://localhost:8000/login/logout';
+        await axios.get(url, {withCredentials: true})
+            .then(res => {
+                console.log("Logout successful!");
+            }).catch(reason => {
+                console.log(reason);
+            })
+    }
+
+    const handleNavigation = () => { navigate('/') }
+
     return(
+        <>
+    
         <div className="w-full bg-purple-300 p-4 flex justify-around items-center">
             <div>
                 <span>Luumy</span>
             </div>
             
-
-            {/* <div className="w-1/3 flex justify-between bg-white">
-                <input type="text" placeholder="Albums, Artists, Users"  className="w-11/12 bg-purple-300 py-1.5 focus:outline-none placeholder-gray-500"
-                />
-                <button className='w-1/12'>
-                    <SearchIcon className=' hover:text-gray-500 transition duration-700 '/>
-                </button>
-                <span>Albums, Artists</span>
-                <SearchIcon className=' hover:text-gray-500 transition duration-700 '/>
-            </div> */}
             <button className='w-1/3 flex justify-between rounded bg-purple-300 border border-purple-200 p-1' onClick={props.openModal}>
                 <span>Albums, Artists</span>
                 <SearchIcon />
             </button>
 
-            {username ? <div>
-                            <span>{username}</span>
+            {username ? <div className='group relative'>
+                            <button className=''><Avatar>{username.slice(0,1).toUpperCase()}</Avatar></button>
+                            <div className='absolute bg-purple-300 top-[40px] -right-[42px] px-5 py-3 rounded-b-lg invisible group-hover:visible'>
+                                <div className='text-center pt-3.5'>
+                                    
+                                    <button className='hover:text-gray-500 inline-flex' onClick={handleLogout}><LogoutIcon/><span className='pl-2'>Logout</span></button>
+                                </div>
+                            </div>
                         </div>
-            : <div> <span> Log In / Sign Up</span></div>
+            : <div> <button onClick={handleNavigation}><span>Log In / Sign Up</span></button></div>
             }
         </div>
+        
+        </>
     );
     
 }
