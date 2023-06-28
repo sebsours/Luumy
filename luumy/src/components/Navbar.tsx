@@ -36,12 +36,13 @@ export default function Navbar(props:NavbarProps)
         await axios.get(url, {withCredentials: true})
             .then(res => {
                 console.log("Logout successful!");
+                navigate('/')
             }).catch(reason => {
                 console.log(reason);
             })
     }
 
-    const handleNavigation = () => { navigate('/') }
+    const handleNavigation = () => { navigate('/')}
 
     return(
         <>

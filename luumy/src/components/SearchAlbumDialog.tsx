@@ -127,7 +127,22 @@ export default function AlbumDialog(props: AlbumDialog){
                         <div>
                             <label htmlFor="score">Score</label>
                             <input type="number" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='score' min={0} max={10}
-                            onChange={(e) => {setScore(e.target.valueAsNumber)}}/>
+                            onBlur={(e) => {
+                                if (e.target.value.match(/^(?:10|\d(?:\.\d{1,2})?)$/)) {
+                                    if (e.target.valueAsNumber % 1 !== 0) e.target.value = parseFloat(e.target.value).toFixed(1);
+                                    setScore(e.target.valueAsNumber);
+                                } else {
+                                    if (e.target.valueAsNumber < 0) {
+                                        e.target.value = '0';
+                                        setScore(0);
+                                    }
+                                    else if (e.target.valueAsNumber > 10) {
+                                        e.target.value = '10';
+                                        setScore(10);
+                                    }
+                                }
+                            }}
+                            />
                         </div>
                         
                         <div className='col-span-2'>

@@ -114,8 +114,12 @@ export default function UserList()
             albumComponents.push(
                 <div key={index}>
                     <AlbumCard 
-                        favoriteTrack={`${album.favoriteTrack}`} score={album.score} notes={`${album.notes}`}
-                        image={`${album.image}`} name={`${album.name}`} artistName={`${album.artistName}`}
+                        favoriteTrack={album.favoriteTrack ? `${album.favoriteTrack}` : null} 
+                        score={album.score ? album.score : null} 
+                        notes={album.notes ? `${album.notes}` : null}
+                        image={`${album.image}`}
+                        name={`${album.name}`} 
+                        artistName={`${album.artistName}`}
                     />
                 </div>
                 

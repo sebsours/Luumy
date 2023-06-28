@@ -1,15 +1,16 @@
 import NotesIcon from '@mui/icons-material/Notes';
-interface AlbumCard
+import { Tooltip } from '@mui/material';
+interface AlbumCardProps
 {
-    favoriteTrack:string | null | undefined;
-    score:number | null | undefined;
-    notes:string | null | undefined;
+    favoriteTrack:string | null;
+    score:number | null;
+    notes:string | null;
     image:string;
     name:string;
     artistName:string;
 }
 
-export default function AlbumCard(props:AlbumCard)
+export default function AlbumCard(props:AlbumCardProps)
 {
     return (
         <div className="flex h-full bg-zinc-600 rounded-md">
@@ -24,7 +25,11 @@ export default function AlbumCard(props:AlbumCard)
                 </div>
 
                 <div className='flex justify-between'>  
-                    <button disabled><NotesIcon className='hover:bg-slate-400 transition rounded'/></button>
+                {props.notes ? 
+                    <Tooltip title={props.notes} placement='right-end'>
+                        <NotesIcon className='hover:bg-slate-400 transition rounded'/>
+                    </Tooltip>: <div></div>
+                }
                     <span className='self-center pr-4 text-xl font-semibold'>{props.score}</span>
                 </div>
             </div>
