@@ -133,10 +133,10 @@ export default function UserList()
 
     return (
         
-        <div className='h-full'>
+        <div className='h-full bg-purple-200'>
             
             <Navbar openModal={() => setModalOpen(true)}/>
-            <div className='h-full bg-purple-200'>
+            <div className=' bg-purple-200'>
                 <div>
                     <ul className='py-10 pl-32 flex items-end gap-12'>
                         <li className='flex items-end'>

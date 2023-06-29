@@ -45,8 +45,6 @@ export default function Navbar(props:NavbarProps)
     const handleNavigation = () => { navigate('/')}
 
     return(
-        <>
-    
         <div className="w-full bg-purple-300 p-4 flex justify-around items-center">
             <div>
                 <span>Luumy</span>
@@ -69,8 +67,6 @@ export default function Navbar(props:NavbarProps)
             : <div> <button onClick={handleNavigation}><span>Log In / Sign Up</span></button></div>
             }
         </div>
-        
-        </>
     );
     
 }
