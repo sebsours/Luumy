@@ -13,14 +13,20 @@ interface AlbumDialog
     image: string;
     artist: string;
     albumID: string;
+
+    favoriteTrack?:string | null;
+    score?:number | null;
+    notes?:string | null;
+    edit?:boolean;
 }
 
 export default function AlbumDialog(props: AlbumDialog){
 
     const [tracks, setTracks] = useState([]);
-    const [favoriteTrack, setFavoriteTrack] = useState('');
-    const [score, setScore] = useState(-1);
-    const [notes, setNotes] = useState('');
+    const [favoriteTrack, setFavoriteTrack] = useState(props.favoriteTrack ? props.favoriteTrack : '');
+    const [score, setScore] = useState(props.score ? props.score : -1);
+    const [notes, setNotes] = useState(props.notes ? props.notes : '');
+    const [edit, setEdit] = useState(props.edit ? props.edit : false);
 
     const userData = useContext(UserContext);
     const toggleUpdate = useContext(AlbumContext);
@@ -52,7 +58,7 @@ export default function AlbumDialog(props: AlbumDialog){
     const handleGetAlbumTracks = (tracks:any) => {
         const trackNames:any = [];
 
-        trackNames.push(<option key={0} value='0'></option>)
+        trackNames.push(<option key={0} value=''></option>)
         
         tracks.items.forEach((track:any, index:number) => {
             trackNames.push(
@@ -67,14 +73,33 @@ export default function AlbumDialog(props: AlbumDialog){
     const handleSaveAlbum = async () => {
         const saveAlbum = {
             spotifyID: props.albumID,
-            favoriteTrack: favoriteTrack ? favoriteTrack : undefined,
-            score: score > -1 ? score : undefined,
-            notes: notes ? notes : undefined,
+            favoriteTrack: favoriteTrack ? favoriteTrack : null,
+            score: score > -1 ? score : null,
+            notes: notes ? notes : null,
         };
 
-        const url = 'http://localhost:8000/album/add';
+        
 
-        await axios.post(url, saveAlbum, {withCredentials: true})
+        if (edit)
+        {
+            const url = 'http://localhost:8000/album/editAlbum';
+            
+            await axios.put(url, saveAlbum, {withCredentials: true})
+                .then((response) => {
+                    console.log(response.data);
+                    props.closeDialog();
+
+
+                    toggleUpdate();
+                })
+                .catch((error) => {
+                    console.log(error);
+                    navigate("/");
+                })
+
+        } else {
+            const url = 'http://localhost:8000/album/add';
+            await axios.post(url, saveAlbum, {withCredentials: true})
             .then((response) => {
                 console.log(response.data);
                 props.closeDialog();
@@ -87,7 +112,7 @@ export default function AlbumDialog(props: AlbumDialog){
                 // Maybe change this
                 navigate("/");
             });
-
+        }
        
     }
 
@@ -117,8 +142,9 @@ export default function AlbumDialog(props: AlbumDialog){
                     <div className='grid grid-cols-2 gap-x-5 gap-y-3 mt-6'>
                         <div>
                             <label htmlFor="favoriteTrack">Favorite Track</label>
-                            {/* <input type="text" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='favoriteTrack'/> */}
-                            <select name="favoriteTrack" id="favoriteTrack" className='bg-slate-600 w-full rounded-sm text-neutral-100 focus:outline-none p-1'
+                            {/* To have a preselected option, you have to use value attribute and set that equal to the favorite song */}
+                            <select name="favoriteTrack" id="favoriteTrack" value={favoriteTrack ? favoriteTrack : ''} 
+                            className='bg-slate-600 w-full rounded-sm text-neutral-100 focus:outline-none p-1'
                             onChange={(e) => {setFavoriteTrack(e.target.value)}}>
                                 {tracks}
                             </select>
@@ -127,9 +153,13 @@ export default function AlbumDialog(props: AlbumDialog){
                         <div>
                             <label htmlFor="score">Score</label>
                             <input type="number" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='score' min={0} max={10}
+                            value={score !== -1 ? score : ''}
+                            onChange={(e) => {setScore(e.target.valueAsNumber ? e.target.valueAsNumber : 0)}}
                             onBlur={(e) => {
-                                if (e.target.value.match(/^(?:10|\d(?:\.\d{1,2})?)$/)) {
-                                    if (e.target.valueAsNumber % 1 !== 0) e.target.value = parseFloat(e.target.value).toFixed(1);
+                                if (e.target.value.match(/^(?:10|\d(?:\.\d+)?)$/)) {
+                                    if (e.target.valueAsNumber % 1 !== 0){ 
+                                        e.target.value = parseFloat(e.target.value).toFixed(1);
+                                    }
                                     setScore(e.target.valueAsNumber);
                                 } else {
                                     if (e.target.valueAsNumber < 0) {
@@ -149,6 +179,7 @@ export default function AlbumDialog(props: AlbumDialog){
                             <label htmlFor="notes">Notes</label>
                             {/* <input type="text" className='bg-slate-500 w-full rounded-sm resize-y' id='notes'/> */}
                             <textarea id="notes" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' 
+                            value={notes ? notes : ''}
                             onChange={(e) => setNotes(e.target.value)}></textarea>
                         </div>
                         

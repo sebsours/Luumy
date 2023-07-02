@@ -14,6 +14,7 @@ interface albumObj
     favoriteTrack?:string,
     score?:string,
     notes?:string,
+    spotifyID:string,
     image:string,
     name:string,
     artistName:string
@@ -117,6 +118,7 @@ export default function UserList()
                         favoriteTrack={album.favoriteTrack ? `${album.favoriteTrack}` : null} 
                         score={album.score ? album.score : null} 
                         notes={album.notes ? `${album.notes}` : null}
+                        spotifyID={album.spotifyID}
                         image={`${album.image}`}
                         name={`${album.name}`} 
                         artistName={`${album.artistName}`}
@@ -132,47 +134,48 @@ export default function UserList()
     }
 
     return (
-        
-        <div className='h-full bg-purple-200'>
-            
-            <Navbar openModal={() => setModalOpen(true)}/>
-            <div className=' bg-purple-200'>
-                <div>
-                    <ul className='py-10 pl-32 flex items-end gap-12'>
-                        <li className='flex items-end'>
-                            <div className='bg-slate-400 h-48 w-36 flex justify-center items-center'>
-                                <span className='text-7xl'>{params.username?.slice(0,1).toUpperCase()}</span>
-                            </div>
-                            <span className='pl-3.5 text-lg'>{params.username}</span>
-                        </li>
-                        <li>
-                            <input type="text" placeholder='Filter' onChange={(e) => {setFilterQuery(e.target.value)}}
-                            />
+        <AlbumContext.Provider value={toggleUpdate} >
+            <div className='h-full bg-purple-200'>
+                
+                <Navbar openModal={() => setModalOpen(true)}/>
+                <div className=' bg-purple-200'>
+                    <div>
+                        <ul className='py-10 pl-32 flex items-end gap-12'>
+                            <li className='flex items-end'>
+                                <div className='bg-slate-400 h-48 w-36 flex justify-center items-center'>
+                                    <span className='text-7xl'>{params.username?.slice(0,1).toUpperCase()}</span>
+                                </div>
+                                <span className='pl-3.5 text-lg'>{params.username}</span>
+                            </li>
+                            <li>
+                                <input type="text" placeholder='Filter' onChange={(e) => {setFilterQuery(e.target.value)}}
+                                />
 
-                        </li>
-                        <li>
-                            <select name="sort" id="sort" onChange={(e) => {setSortCriteria(e.target.value)}}>
-                                <option value="Score">Score</option>
-                                <option value="Title">Title</option>
-                                <option value="Artist">Artist</option>
-                            </select>
-                        </li>
-                    </ul>
+                            </li>
+                            <li>
+                                <select name="sort" id="sort" onChange={(e) => {setSortCriteria(e.target.value)}}>
+                                    <option value="Score">Score</option>
+                                    <option value="Title">Title</option>
+                                    <option value="Artist">Artist</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    
+
+                    
+                    <div className='px-32 pb-10'>
+                        <AlbumList UserAlbumList={userAlbumsDivs}/>
+                    </div>
+                    
                 </div>
                 
+                    <SearchModal isVisible={modalOpen} closeModal={() => setModalOpen(false)}/>
                 
-
-                
-                <div className='px-32 pb-10'>
-                    <AlbumList UserAlbumList={userAlbumsDivs}/>
-                </div>
                 
             </div>
-            <AlbumContext.Provider value={toggleUpdate} >
-                <SearchModal isVisible={modalOpen} closeModal={() => setModalOpen(false)}/>
-            </AlbumContext.Provider>
-            
-        </div>
+        </AlbumContext.Provider>
         
     )
 }

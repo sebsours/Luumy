@@ -6,25 +6,6 @@ import Album from '../schemas/Album.js';
 import authenticateToken from '../authentication/authToken.js';
 import { getAuth } from './spotify.js';
 
-
-// const buildSpotifyString = async (user) => {
-//     let allSpotifyIDs = '';
-//     // The spotify limits only 20 spotify ids per call. Need to find a way to 
-//     // satisfy this.
-//     await Promise.all(user.albumList.map(async (album, index) => {
-
-//         const albumObject = await Album.findById(album);
-//         // console.log(albumObject);
-//         allSpotifyIDs += albumObject.spotifyID;
-//         allSpotifyIDs += ',';
-//         // console.log(allSpotifyIDs);
-//     }));
-
-//     allSpotifyIDs = allSpotifyIDs.slice(0, -1);
-
-//     return allSpotifyIDs;
-// }
-
 const router = express.Router();
 
 router.post('/add', authenticateToken, async (req, res) => {
@@ -87,6 +68,7 @@ router.post('/getAlbums', async (req, res) => {
                         favoriteTrack: album.favoriteTrack,
                         score: album.score,
                         notes: album.notes,
+                        spotifyID: album.spotifyID,
                         image: response.data.images[0].url,
                         name: response.data.name,
                         artistName: response.data.artists[0].name
@@ -106,7 +88,44 @@ router.post('/getAlbums', async (req, res) => {
         res.send(error);
         console.log(error);
     }
-})
+});
+
+router.delete('/deleteAlbum', authenticateToken, async (req, res) => {
+    // Remove from the user album list array
+    // Remove from album document
+    try {
+        const album = await Album.findOneAndDelete({ userID: req.user.id, spotifyID: req.body.spotifyID });
+
+        await User.findOneAndUpdate({ username: req.user.username }, {
+            $pull: {
+                albumList: album._id,
+            }
+        });
+
+        res.status(200).send("Ok");
+
+    } catch (error) {
+        console.log(error);
+        res.send(error);
+    }
+});
+
+router.put('/editAlbum', authenticateToken, async (req, res) => {
+    try {
+        // edit album's favorite track, score, or notes
+        const update = {
+            favoriteTrack: req.body.favoriteTrack,
+            score: req.body.score,
+            notes: req.body.notes
+        }
+        await Album.findOneAndUpdate({ userID: req.user.id, spotifyID: req.body.spotifyID }, update);
+
+        res.status(200).send("Ok");
+    } catch (error) {
+        console.log(error);
+        res.send(error);
+    }
+});
 
 
 export default router;
