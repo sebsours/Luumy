@@ -6,7 +6,7 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import { UserContext } from '../App';
 import axios from 'axios';
 import { Avatar } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface albumObj
 {
@@ -25,6 +25,7 @@ export const AlbumContext = createContext<any>(null);
 export default function UserList()
 {   
     const [modalOpen, setModalOpen] = useState(false);
+    const [validUser, setValidUser] = useState(false);
     const [userAlbums, setUserAlbums] = useState([]);
     const [userAlbumsDivs, setUserAlbumsDivs] = useState([]);
     const [updateAlbumList, setUpdateAlbumList] = useState('toggle');
@@ -32,6 +33,7 @@ export default function UserList()
     const [filterQuery, setFilterQuery] = useState('');
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const toggleUpdate = () => {
         setUpdateAlbumList(updateAlbumList => (updateAlbumList === 'toggle' ? 'retoggle' : 'toggle'));
@@ -45,6 +47,7 @@ export default function UserList()
     async function fetchUserAlbums()
     {
         const url = 'http://localhost:8000/album/getAlbums';
+
         await axios.post(url, {username: params.username} , {
             headers: {
                 'Content-Type': 'application/json'
@@ -60,9 +63,24 @@ export default function UserList()
             .catch(error => console.log(error));
     }
 
+    async function checkValidUser()
+    {
+        const url = 'http://localhost:8000/user/findUser';
+
+        await axios.post(url, { username: params.username})
+            .then(response => {
+                setValidUser(true);
+            })
+            .catch(error => {
+                navigate("/404");
+            })
+    }
+
 
     useEffect(() => {
-        fetchUserAlbums();
+        checkValidUser();
+
+        if (validUser) { fetchUserAlbums(); }
     }, [updateAlbumList]);
 
     // When a user changes the sorting option, this useEffect will run

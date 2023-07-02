@@ -9,6 +9,7 @@ import spotify_apis from "./routes/spotify.js";
 import signup_api from "./routes/signup.js";
 import login_api from "./routes/login.js";
 import album_api from "./routes/album.js";
+import user_api from "./routes/user.js";
 
 
 dotenv.config();
@@ -41,6 +42,7 @@ app.use("/spotify", spotify_apis);
 app.use("/signup", signup_api);
 app.use("/login", login_api);
 app.use("/album", album_api);
+app.use("/user", user_api);
 
 app.listen(port, () => {
     console.log(`API listening on port ${port}`);
