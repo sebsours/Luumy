@@ -54,7 +54,7 @@ export default function Auth(props: AuthProps){
     }, [])
 
     return (
-        <div className="h-screen bg-purple-200 flex justify-center items-center">
+        <div className="h-screen bg-background flex justify-center items-center text-text">
             <div className='pr-48'>
                 <span className='text-9xl'>
                     <NightsStayIcon fontSize='inherit'/>
@@ -66,7 +66,7 @@ export default function Auth(props: AuthProps){
                 <p className='text-sm font-light text-right mt-1'>Uses Spotify's WebAPI</p>
             </div>
 
-            <div className="bg-purple-300 rounded-sm w-1/5">
+            <div className="bg-accent rounded-sm w-1/5">
                 
                 <div className="p-6">
                     <div className="mb-3">
@@ -89,11 +89,11 @@ export default function Auth(props: AuthProps){
                     </div>
 
                     <div className='w-full mb-3'>
-                        <button className='w-full bg-purple-500 rounded' onClick={handleLogin}>Login</button>
+                        <button className='w-full bg-primary-button rounded' onClick={handleLogin}>Login</button>
                     </div>
                     
                     <div>
-                        <p>Don't have an account? <span onClick={()=> navigate('/signup')} className='text-purple-50 cursor-pointer'>Create an account</span> </p>
+                        <p>Don't have an account? <span onClick={()=> navigate('/signup')} className='cursor-pointer'>Create an account</span> </p>
                         
                     </div>
 

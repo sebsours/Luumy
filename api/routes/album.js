@@ -69,7 +69,7 @@ router.post('/getAlbums', async (req, res) => {
                         score: album.score,
                         notes: album.notes,
                         spotifyID: album.spotifyID,
-                        image: response.data.images[0].url,
+                        image: response.data.images,
                         name: response.data.name,
                         artistName: response.data.artists[0].name
                     })

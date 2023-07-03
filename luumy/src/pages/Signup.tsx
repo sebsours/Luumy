@@ -50,9 +50,9 @@ export default function Signup()
     }
 
     return(
-        <div className="h-screen bg-purple-200 flex justify-center items-center">
+        <div className="h-screen bg-background flex justify-center items-center text-text">
         
-            <div className="bg-purple-300 rounded-sm w-1/5">
+            <div className="bg-accent rounded-sm w-1/5">
                 
                 <div className="p-6">
                     <div className="mb-3">
@@ -81,7 +81,7 @@ export default function Signup()
                     </div>
 
                     <div className='w-full mb-3'>
-                        <button className='w-full bg-purple-500 rounded py-1.5' onClick={e => handleSignUp(e)}>Create Account</button>
+                        <button className='w-full bg-primary-button rounded py-1.5' onClick={e => handleSignUp(e)}>Create Account</button>
                     </div>
                     
                     {/* <div>

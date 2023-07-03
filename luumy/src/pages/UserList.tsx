@@ -15,9 +15,15 @@ interface albumObj
     score?:string,
     notes?:string,
     spotifyID:string,
-    image:string,
+    image:Image[],
     name:string,
     artistName:string
+}
+interface Image
+{
+    url: string;
+    height: number;
+    width: number;
 }
 
 export const AlbumContext = createContext<any>(null);
@@ -25,7 +31,7 @@ export const AlbumContext = createContext<any>(null);
 export default function UserList()
 {   
     const [modalOpen, setModalOpen] = useState(false);
-    const [validUser, setValidUser] = useState(false);
+    // const [validUser, setValidUser] = useState(false);
     const [userAlbums, setUserAlbums] = useState([]);
     const [userAlbumsDivs, setUserAlbumsDivs] = useState([]);
     const [updateAlbumList, setUpdateAlbumList] = useState('toggle');
@@ -65,11 +71,12 @@ export default function UserList()
 
     async function checkValidUser()
     {
+        console.log("yo")
         const url = 'http://localhost:8000/user/findUser';
 
         await axios.post(url, { username: params.username})
             .then(response => {
-                setValidUser(true);
+                fetchUserAlbums();
             })
             .catch(error => {
                 navigate("/404");
@@ -80,7 +87,6 @@ export default function UserList()
     useEffect(() => {
         checkValidUser();
 
-        if (validUser) { fetchUserAlbums(); }
     }, [updateAlbumList]);
 
     // When a user changes the sorting option, this useEffect will run
@@ -137,7 +143,7 @@ export default function UserList()
                         score={album.score ? album.score : null} 
                         notes={album.notes ? `${album.notes}` : null}
                         spotifyID={album.spotifyID}
-                        image={`${album.image}`}
+                        image={album.image}
                         name={`${album.name}`} 
                         artistName={`${album.artistName}`}
                     />
@@ -153,17 +159,17 @@ export default function UserList()
 
     return (
         <AlbumContext.Provider value={toggleUpdate} >
-            <div className='h-full bg-purple-200'>
+            <div className='h-full bg-background'>
                 
                 <Navbar openModal={() => setModalOpen(true)}/>
-                <div className=' bg-purple-200'>
+                <div className=' bg-background'>
                     <div>
                         <ul className='py-10 pl-32 flex items-end gap-12'>
                             <li className='flex items-end'>
                                 <div className='bg-slate-400 h-48 w-36 flex justify-center items-center'>
                                     <span className='text-7xl'>{params.username?.slice(0,1).toUpperCase()}</span>
                                 </div>
-                                <span className='pl-3.5 text-lg'>{params.username}</span>
+                                <span className='pl-3.5 text-lg text-text'>{params.username}</span>
                             </li>
                             <li>
                                 <input type="text" placeholder='Filter' onChange={(e) => {setFilterQuery(e.target.value)}}

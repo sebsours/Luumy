@@ -45,19 +45,19 @@ export default function Navbar(props:NavbarProps)
     const handleNavigation = () => { navigate('/')}
 
     return(
-        <div className="w-full bg-purple-300 p-4 flex justify-around items-center">
+        <div className="w-full bg-background p-4 flex justify-around items-center text-text font-sans">
             <div>
                 <span>Luumy</span>
             </div>
-            
-            <button className='w-1/3 flex justify-between rounded bg-purple-300 border border-purple-200 p-1' onClick={props.openModal}>
+            {/* border border-[]  */}
+            <button className='w-1/3 flex justify-between rounded border border-primary-button p-1' onClick={props.openModal}>
                 <span>Albums, Artists</span>
                 <SearchIcon />
             </button>
 
             {username ? <div className='group relative'>
                             <button className=''><Avatar>{username.slice(0,1).toUpperCase()}</Avatar></button>
-                            <div className='absolute bg-purple-300 top-[40px] -right-[42px] px-5 py-3 rounded-b-lg invisible group-hover:visible'>
+                            <div className='absolute bg-[] top-[40px] -right-[42px] px-5 py-3 rounded-b-lg invisible group-hover:visible'>
                                 <div className='text-center pt-3.5'>
                                     
                                     <button className='hover:text-gray-500 inline-flex' onClick={handleLogout}><LogoutIcon/><span className='pl-2'>Logout</span></button>
