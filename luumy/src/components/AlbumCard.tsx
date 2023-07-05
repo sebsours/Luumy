@@ -85,46 +85,65 @@ export default function AlbumCard(props:AlbumCardProps)
         //                         edit={true}/>
         //     : null}
         // </div>
-        <div className='h-[400px] w-[700px] bg-accent rounded-md group'>
-            <div className='h-full flex py-10 mx-5'>
-                <div className='h-full w-1/2 grid items-center justify-center '>
-                    <img src={props.image[1].url} alt="albumCover"/>
-                </div>
-                <div className='h-full w-1/2 text-text relative py-5'>
-                    <div className='grid gap-4'>
-                        <span className='font-bold text-2xl'>{props.name}</span>
-                        <span className='font-semibold text-lg'>{props.artistName}</span>
-                        <span className='font-medium text-xs'>{props.favoriteTrack}</span>
-                    </div>
+
+
+        // This is the design I want
+        // <div className='h-[400px] w-[700px] bg-accent rounded-md group'>
+        //     <div className='h-full flex py-10 mx-5'>
+        //         <div className='h-full w-1/2 grid items-center justify-center '>
+        //             <img src={props.image[1].url} alt="albumCover"/>
+        //         </div>
+        //         <div className='h-full w-1/2 text-text relative py-5'>
+        //             <div className='grid gap-4'>
+        //                 <span className='font-bold text-2xl'>{props.name}</span>
+        //                 <span className='font-semibold text-lg'>{props.artistName}</span>
+        //                 <span className='font-medium text-xs'>{props.favoriteTrack}</span>
+        //             </div>
                     
-                    <span className='absolute bottom-3 right-0 font-semibold text-2xl tracking-normal'>{props.score}</span>
-                    <MoreHorizIcon className='absolute top-5 right-0 invisible group-hover:visible'/>
-                    { props.notes ? 
-                        <Tooltip title={props.notes} placement='right'>
-                            <CommentIcon className='absolute bottom-5 left-0' fontSize='small'/>
-                        </Tooltip> : null 
-                    }
+        //             <span className='absolute bottom-3 right-0 font-semibold text-2xl tracking-normal'>{props.score}</span>
+        //             <MoreHorizIcon className='absolute top-5 right-0 invisible group-hover:visible'/>
+        //             { props.notes ? 
+        //                 <Tooltip title={props.notes} placement='right'>
+        //                     <CommentIcon className='absolute bottom-5 left-0' fontSize='small'/>
+        //                 </Tooltip> : null 
+        //             }
 
                     
+        //         </div>
+        //     </div>
+        // </div>
+
+        <div className='h-[325px] w-[175px] lg:h-[210px] lg:w-[425px] 2xl:w-[425px] bg-accent rounded-md group'>
+            <div className='flex flex-col lg:flex-row items-center h-full pt-3 lg:pt-0 lg:px-4'>
+                <div className='w-5/6 lg:w-2/5'>
+                    <img src={props.image[1].url} alt="albumCover" className=''/>
+                </div>
+
+                <div className='h-2/3 w-full lg:w-3/5 lg:h-full text-text px-4 pt-3 lg:py-5'>
+                    <div className='h-full flex flex-col relative gap-1.5'>
+                        <div className='flex'>
+                            <span className='font-bold text-sm lg:text-lg flex-1'>{props.name}</span>
+                            <MoreHorizIcon className='invisible group-hover:visible'/>
+                        </div>
+                        
+                        <span className='font-semibold text-xs'>{props.artistName}</span>
+                        <span className='font-medium text-xs'>{props.favoriteTrack}</span>
+
+                        <div className='flex justify-between mt-auto pb-1.5 lg:pb-1'>
+                            { props.notes ? 
+                                <Tooltip title={props.notes} placement='right'>
+                                    <CommentIcon className='mt-auto' fontSize='small'/>
+                                </Tooltip> : <div className='invisble'></div> 
+                            }
+                            <span className='font-semibold text-lg tracking-tight lg:text-xl'>{props.score}</span>
+                        </div>
+
+                        
+                    </div>
+
+                   
                 </div>
             </div>
-            {/* <div>
-                    <button className='bg-slate-300 mr-3 text-black' onClick={() => setOpen(true)}>Edit</button>
-                        {open ? <AlbumDialog open={open} 
-                                            closeDialog={() => setOpen(false)} 
-                                            name={props.name} 
-                                            image={props.image[0].url} 
-                                            artist={props.artistName}
-                                            albumID={props.spotifyID} 
-                                            favoriteTrack={props.favoriteTrack} 
-                                            score={props.score} 
-                                            notes={props.notes}
-                                            edit={true}/>
-                        : null}
-            </div> */}
-            
-            
-            
         </div>
     );
 }

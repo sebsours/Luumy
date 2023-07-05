@@ -189,7 +189,7 @@ export default function UserList()
                     
 
                     
-                    <div className='px-32 pb-10'>
+                    <div className='px-10 lg:px-32 pb-10'>
                         <AlbumList UserAlbumList={userAlbumsDivs}/>
                     </div>
                     
