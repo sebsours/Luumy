@@ -119,7 +119,7 @@ export default function AlbumCard(props:AlbumCardProps)
                     <img src={props.image[1].url} alt="albumCover" className=''/>
                 </div>
 
-                <div className='h-2/3 w-full lg:w-3/5 lg:h-full text-text px-4 pt-3 lg:py-5'>
+                <div className='h-2/3 w-full lg:w-3/5 lg:h-full text-text px-4 lg:pl-4 lg:pr-0.5 pt-3 lg:py-5'>
                     <div className='h-full flex flex-col relative gap-1.5'>
                         <div className='flex'>
                             <span className='font-bold text-sm lg:text-lg flex-1'>{props.name}</span>

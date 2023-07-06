@@ -181,7 +181,7 @@ export default function UserList()
                                         className='bg-transparent focus:outline-none py-1 px-1.5'/>
                                     </div>
 
-                                    <div className='sm:mx-7 pb-10 lg:pb-0'>
+                                    <div className='sm:mx-7 pb-10 lg:pb-0.5'>
                                         <label htmlFor="sort" className='font-normal text-xs'>Sort</label>
                                         <select name="sort" id="sort" onChange={(e) => {setSortCriteria(e.target.value)}}
                                         className='bg-primary-button w-full rounded-sm text-neutral-100 focus:outline-none p-1 mt-1'>
