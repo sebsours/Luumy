@@ -6,6 +6,7 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import { UserContext } from '../App';
 import axios from 'axios';
 import { Avatar } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { useParams, useNavigate } from 'react-router-dom';
 
 interface albumObj
@@ -162,40 +163,47 @@ export default function UserList()
             <div className='h-full bg-background'>
                 
                 <Navbar openModal={() => setModalOpen(true)}/>
-                <div className=' bg-background'>
-                    <div>
-                        <ul className='py-10 pl-32 flex items-end gap-12'>
-                            <li className='flex items-end'>
-                                <div className='bg-slate-400 h-48 w-36 flex justify-center items-center'>
-                                    <span className='text-7xl'>{params.username?.slice(0,1).toUpperCase()}</span>
-                                </div>
-                                <span className='pl-3.5 text-lg text-text'>{params.username}</span>
-                            </li>
-                            <li>
-                                <input type="text" placeholder='Filter' onChange={(e) => {setFilterQuery(e.target.value)}}
-                                />
+               
+                    <div className='bg-background'>
+                        <div className='text-text mt-3 mb-1 lg:mb-10 lg:flex lg:justify-center'>
+                            <ul className='flex flex-col items-center gap-4 '>
+                                <li className='flex flex-col items-center'>
+                                    <div className='bg-gradient-to-b from-primary-button to-background h-48 w-36 flex justify-center items-center'>
+                                        <span className='font-semibold text-7xl'>{params.username?.slice(0,1).toUpperCase()}</span>
+                                    </div>
+                                    <span className='font-semibold text-lg'>{params.username}</span>
+                                </li>
 
-                            </li>
-                            <li>
-                                <select name="sort" id="sort" onChange={(e) => {setSortCriteria(e.target.value)}}>
-                                    <option value="Score">Score</option>
-                                    <option value="Title">Title</option>
-                                    <option value="Artist">Artist</option>
-                                </select>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    
+                                <li className='w-full flex flex-col justify-center items-center sm:flex-row lg:justify-normal lg:items-end lg:ml-5'>
+                                    <div className='w-4/6 sm:w-2/5 lg:w-[280px] rounded border border-primary-button mb-3 lg:mb-0'> 
+                                        <SearchIcon fontSize='small' className='ml-1'></SearchIcon>
+                                        <input type="text" placeholder='Filter' onChange={(e) => {setFilterQuery(e.target.value)}} 
+                                        className='bg-transparent focus:outline-none py-1 px-1.5'/>
+                                    </div>
 
-                    
-                    <div className='px-10 lg:px-32 pb-10'>
-                        <AlbumList UserAlbumList={userAlbumsDivs}/>
+                                    <div className='sm:mx-7 pb-10 lg:pb-0'>
+                                        <label htmlFor="sort" className='font-normal text-xs'>Sort</label>
+                                        <select name="sort" id="sort" onChange={(e) => {setSortCriteria(e.target.value)}}
+                                        className='bg-primary-button w-full rounded-sm text-neutral-100 focus:outline-none p-1 mt-1'>
+                                            <option value="Score">Score</option>
+                                            <option value="Title">Title</option>
+                                            <option value="Artist">Artist</option>
+                                        </select>
+                                    </div>
+                                    
+                                    
+                                </li>
+                                
+                            </ul>
+                        </div>
+
+
+                        <div className='flex flex-row justify-evenly pb-10'>
+                            <AlbumList UserAlbumList={userAlbumsDivs}/>
+                        </div>
                     </div>
-                    
-                </div>
                 
-                    <SearchModal isVisible={modalOpen} closeModal={() => setModalOpen(false)}/>
+                <SearchModal isVisible={modalOpen} closeModal={() => setModalOpen(false)}/>
                 
                 
             </div>
