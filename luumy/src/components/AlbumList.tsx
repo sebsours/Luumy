@@ -2,12 +2,12 @@ import AlbumCard from "./AlbumCard"
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
-interface AlbumList
+interface AlbumListProps
 {
     UserAlbumList: any
 }
 
-export default function AlbumList(props:AlbumList)
+export default function AlbumList(props:AlbumListProps)
 {
     return(
         // grid grid-cols-4 gap-4

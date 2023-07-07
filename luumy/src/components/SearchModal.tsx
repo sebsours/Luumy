@@ -67,28 +67,29 @@ export default function SearchModal(props:SearchModalProps){
 
     return (
         <div>
-            <Dialog open={props.isVisible} onClose={props.closeModal} fullWidth={true} maxWidth={'lg'} >
-                <DialogContent className='bg-purple-900'>
-                    <div className='flex justify-center' >
-                        <div className='w-1/2 mb-4 border border-purple-500 rounded-md'>
-
+            <Dialog open={props.isVisible} onClose={props.closeModal} fullWidth={true} maxWidth={'lg'} sx={{backdropFilter: "blur(5px)",}} >
+                <DialogContent className='bg-background text-text scrollbar-thin scrollbar-thumb-accent'>
+                    <div className='flex justify-center w-full'>
+                        <div className='w-full lg:w-2/3 flex justify-between rounded border border-primary-button p-1'>
                             <input type="text" placeholder='Albums, Artists'
-                                className='w-11/12 pl-2 py-2.5 bg-transparent focus:outline-none '
-                                onChange={(e) => {setSearch(e.target.value)}}
+                                className='w-11/12 p-1.5 bg-transparent focus:outline-none'
+                                onChange={(e) => setSearch(e.target.value)}
                                 onKeyDown={(event) => {
                                     if (event.key === 'Enter'){
                                         handleSearch();
                                     }
-                                }}/>
-
-                            <button className='w-1/12' onClick={handleSearch}><SearchIcon className='text-purple-500'/></button>
+                                }}
+                            />
+                            <button className='w-1/12 pr-6 sm:pr-0'><SearchIcon /></button>
                         </div>
-                        {/* <button className='pl-5 pb-5 text-4xl'>X</button> */}
+                    </div>
+
+                    <div className='flex justify-evenly'>
+                        <div className='grid grid-cols-1 gap-y-6 gap-x-10 mt-6 min-[430px]:grid-cols-2 sm:grid-cols-3 min-[860px]:grid-cols-4'>
+                            {searchCards}
+                        </div>
                     </div>
                     
-                    <div className="grid grid-cols-4 gap-12 mt-6">
-                        {searchCards}
-                    </div>
                 </DialogContent>
                 
             </Dialog>
