@@ -52,44 +52,37 @@ export default function Signup()
     return(
         <div className="h-screen bg-background flex justify-center items-center text-text">
         
-            <div className="bg-accent rounded-sm w-1/5">
-                
-                <div className="p-6">
-                    <div className="mb-3">
-                        <span className="text-2xl font-semibold">Signup</span>
+            <div className="bg-accent rounded-lg w-80 md:w-96 pb-6">
+                    <div className="mb-3 pl-4 pt-3">
+                        <span className="font-semibold text-2xl">Signup</span>
                     </div>
 
-                    <div className="flex flex-col mb-3 gap-1">
-                        <label htmlFor="email">Email</label>
+                    <div className="flex flex-col mb-3 w-full items-start px-4 gap-1">
+                        <label htmlFor="email" className='font-medium'>Email</label>
                         <input id="email" type="email" placeholder="Email" autoComplete="none"                                                                                                                                                    
-                            className="w-full rounded-sm p-1 focus:outline-none"
+                            className="w-full text-accent rounded-sm p-1 focus:outline-none"
                             onChange={e => setEmail(e.target.value)}/>
                     </div>
 
-                    <div className="flex flex-col mb-3 gap-1">
-                        <label htmlFor="username">Username</label>
+                    <div className="flex flex-col mb-3 w-full items-start px-4 gap-1">
+                        <label htmlFor="username" className='font-medium'>Username</label>
                         <input id="username" type="text" placeholder="New Username" autoComplete="none"                                                                                                                                                    
-                            className="w-full rounded-sm p-1 focus:outline-none"
+                            className="w-full text-accent rounded-sm p-1 focus:outline-none"
                             onChange={e => setUsername(e.target.value)}/>
                     </div>
 
-                    <div className="flex flex-col mb-3 gap-1 ">
-                        <label htmlFor="password">Password</label>
+                    <div className="flex flex-col mb-3 w-full items-start px-4 gap-1">
+                        <label htmlFor="password" className='font-medium'>Password</label>
                         <input id="password" type="password" placeholder="New Password" autoComplete="none"
-                            className="w-full rounded-sm p-1 focus:outline-none"
+                            className="w-full text-accent rounded-sm p-1 focus:outline-none"
                             onChange={e => setPassword(e.target.value)}/>
                     </div>
 
-                    <div className='w-full mb-3'>
-                        <button className='w-full bg-primary-button rounded py-1.5' onClick={e => handleSignUp(e)}>Create Account</button>
+                    <div className='flex justify-center pt-1'>
+                        <button className='w-full mx-4 bg-primary-button rounded hover:bg-violet-800 transition ease-in-out font-semibold py-0.5' onClick={e => handleSignUp(e)}>Create Account</button>
                     </div>
-                    
-                    {/* <div>
-                        <p>Don't have an account? <span onClick={()=> console.log('hello')} className='text-purple-50 cursor-pointer'>Create an account</span> </p>
-                        
-                    </div> */}
 
-                </div>
+                
 
             </div>
 
