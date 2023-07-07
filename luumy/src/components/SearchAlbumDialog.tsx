@@ -118,20 +118,24 @@ export default function AlbumDialog(props: AlbumDialog){
 
     return (
         <div>
-            <Dialog open={props.open} onClose={props.closeDialog}>
-                <DialogContent className='bg-violet-300'>
-                    <div className='flex items-end'>
-                        <img src={props.image} alt="" className='w-1/4'/>
+            <Dialog open={props.open} onClose={props.closeDialog} sx={{backdropFilter: 'blur(5px)',}}> 
+                <DialogContent className=' bg-background  text-text'>
+                    <div className='flex flex-col sm:flex-row sm:items-end'>
+                        <div className='sm:w-2/5'>
+                            <img src={props.image} alt=""/>
+                        </div>
+                        
 
-                        <div className='ml-3 w-3/4'>
-                            <p className='text-2xl mb-1.5'>{props.name}</p>
+                        <div className='my-2 sm:ml-3 sm:mb-0'>
+                            <p className='font-semibold text-lg sm:text-xl'>{props.name}</p>
 
-                            <p className='text-xl'>{props.artist}</p>
+                            <p className='font-semibold text-sm sm:text-md tracking-wide'>{props.artist}</p>
                         
                         </div>
 
                         <button onClick={ handleSaveAlbum }
-                            className='bg-violet-500 text-white text-lg rounded px-5 py-0.5'
+                            className='bg-primary-button text-white font-medium rounded px-5 py-0.5 hover:bg-violet-800 transition ease-in-out
+                            sm:ml-auto'
                         >
                             Save
                         </button>
@@ -141,7 +145,7 @@ export default function AlbumDialog(props: AlbumDialog){
 
                     <div className='grid grid-cols-2 gap-x-5 gap-y-3 mt-6'>
                         <div>
-                            <label htmlFor="favoriteTrack">Favorite Track</label>
+                            <label htmlFor="favoriteTrack" className='font-semibold'>Favorite Track</label>
                             {/* To have a preselected option, you have to use value attribute and set that equal to the favorite song */}
                             <select name="favoriteTrack" id="favoriteTrack" value={favoriteTrack ? favoriteTrack : ''} 
                             className='bg-slate-600 w-full rounded-sm text-neutral-100 focus:outline-none p-1'
@@ -151,7 +155,7 @@ export default function AlbumDialog(props: AlbumDialog){
                         </div>
 
                         <div>
-                            <label htmlFor="score">Score</label>
+                            <label htmlFor="score" className='font-semibold'>Score</label>
                             <input type="number" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='score' min={0} max={10}
                             value={score !== -1 ? score : ''}
                             onChange={(e) => {setScore(e.target.valueAsNumber ? e.target.valueAsNumber : 0)}}
@@ -176,7 +180,7 @@ export default function AlbumDialog(props: AlbumDialog){
                         </div>
                         
                         <div className='col-span-2'>
-                            <label htmlFor="notes">Notes</label>
+                            <label htmlFor="notes" className='font-semibold'>Notes</label>
                             {/* <input type="text" className='bg-slate-500 w-full rounded-sm resize-y' id='notes'/> */}
                             <textarea id="notes" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' 
                             value={notes ? notes : ''}

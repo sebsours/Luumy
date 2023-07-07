@@ -75,7 +75,7 @@ export default function Navbar(props:NavbarProps)
             <div className='hidden sm:block'>
                 <span className='font-semibold text-lg'>Luumy</span>
             </div>
-            <button className='w-4/6 lg:w-1/3 flex justify-between rounded border border-primary-button p-1' onClick={props.openModal}>
+            <button className='w-4/6 lg:w-1/3 flex justify-between rounded border border-primary-button p-1 focus:outline-none' onClick={props.openModal}>
                 <span>Find Albums</span>
                 <SearchIcon/>
             </button>
