@@ -44,9 +44,7 @@ export default function UserList()
 
     const toggleUpdate = () => {
         setUpdateAlbumList(updateAlbumList => (updateAlbumList === 'toggle' ? 'retoggle' : 'toggle'));
-    }   
-    
-    // const { data: currentUser, isLoading } = useCurrentUser();
+    }
 
     // Runs on initial render or when user adds an album to their list
     // It also runs when a user adds an album to their list but are on a different page
@@ -72,7 +70,6 @@ export default function UserList()
 
     async function checkValidUser()
     {
-        console.log("yo")
         const url = 'http://localhost:8000/user/findUser';
 
         await axios.post(url, { username: params.username})
@@ -84,9 +81,9 @@ export default function UserList()
             })
     }
 
-
     useEffect(() => {
         checkValidUser();
+        
 
     }, [updateAlbumList]);
 
@@ -147,6 +144,7 @@ export default function UserList()
                         image={album.image}
                         name={`${album.name}`} 
                         artistName={`${album.artistName}`}
+                        
                     />
                 </div>
                 
