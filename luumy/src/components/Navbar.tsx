@@ -1,6 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Avatar, Menu, MenuItem } from '@mui/material';
+import { Avatar, ClickAwayListener, Menu, MenuItem } from '@mui/material';
 
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
@@ -65,9 +65,12 @@ export default function Navbar(props:NavbarProps)
                                     </Avatar> 
                             </button>
                             {openMenu && (
-                                <div className='bg-primary-button absolute top-12 -right-7 rounded-lg w-[100px] py-3 hover:bg-violet-800 transition ease-in-out'>                
-                                    <button className='w-[100px] ' onClick={handleLogout}><LogoutIcon/> Logout</button>
-                                </div>
+                                <ClickAwayListener onClickAway={() => setOpenMenu(false)}>
+                                    <div className='bg-primary-button absolute top-12 -right-7 rounded-lg w-[100px] py-3 hover:bg-violet-800 transition ease-in-out'>                
+                                        <button className='w-[100px] ' onClick={handleLogout}><LogoutIcon/> Logout</button>
+                                    </div>
+                                </ClickAwayListener>
+                                
                             )}
                             
 

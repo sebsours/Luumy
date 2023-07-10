@@ -1,6 +1,6 @@
 import CommentIcon from '@mui/icons-material/Comment';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Tooltip } from '@mui/material';
+import { Tooltip, ClickAwayListener } from '@mui/material';
 import AlbumDialog from './SearchAlbumDialog';
 import { AlbumContext, SessionExpiredContext } from '../pages/UserList';
 import axios from 'axios';
@@ -83,14 +83,17 @@ export default function AlbumCard(props:AlbumCardProps)
                             )}
 
                             {openOptions && (
-                                <ul className='bg-primary-button absolute rounded-md flex flex-col items-center top-6 right-0 w-20 p-2 '>
-                                    <li className='w-full mb-2'>
-                                        <button className='w-full rounded-md hover:bg-violet-800 transition ease-in-out' onClick={() => setOpenModal(true)}>Edit</button>
-                                    </li>
-                                    <li className='w-full'>
-                                        <button className='w-full rounded-md hover:bg-violet-800 transition ease-in-out' onClick={handleDelete}>Delete</button>
-                                    </li>
-                                </ul>    
+                                <ClickAwayListener onClickAway={() => setOpenOptions(false)}>
+                                    <ul className='bg-primary-button absolute rounded-md flex flex-col items-center top-6 right-0 w-20 p-2 '>
+                                        <li className='w-full mb-2'>
+                                            <button className='w-full rounded-md hover:bg-violet-800 transition ease-in-out' onClick={() => setOpenModal(true)}>Edit</button>
+                                        </li>
+                                        <li className='w-full'>
+                                            <button className='w-full rounded-md hover:bg-violet-800 transition ease-in-out' onClick={handleDelete}>Delete</button>
+                                        </li>
+                                    </ul>   
+                                </ClickAwayListener>
+                                 
                             )}
                             
                         </div>
