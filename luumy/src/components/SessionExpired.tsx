@@ -1,6 +1,6 @@
 import { Alert, Collapse, IconButton } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close'
-import { useState, useContext } from "react"
+import { useContext } from "react"
 import { SessionExpiredContext } from "../pages/UserList";
 
 interface SessionExpiredProps
@@ -10,7 +10,6 @@ interface SessionExpiredProps
 
 export default function SessionExpired(props: SessionExpiredProps)
 {
-    // const [open, setOpen] = useState(props.open);
     const {openSessionExpired, toggleSessionExpired} = useContext(SessionExpiredContext);
     return (
         
@@ -25,7 +24,7 @@ export default function SessionExpired(props: SessionExpiredProps)
                         <CloseIcon fontSize="inherit"/>
                     </IconButton>
                 }>
-                Your session expired. Click <strong className="text-accent"><a href="/">here</a></strong> to log back in.
+                You are not logged in. Click <strong className="text-accent"><a href="/">here</a></strong> to log in.
             </Alert>
         </Collapse>
     )

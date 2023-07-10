@@ -1,23 +1,16 @@
 // import { useState, useCallback } from 'react';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../App';
 
-interface AuthProps
-{
-    handleUserData: (userData:Object) => void;
-}
 
-export default function Auth(props: AuthProps){
+export default function Auth(){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [messageUsername, setMessageUsername] = useState<string | null>(null);
     const [messagePassword, setMessagePassword] = useState<string | null>(null);
-
-    // const userData = useContext(UserContext);
 
     const handleLogin = async () => {
         setMessageUsername(null);
@@ -30,8 +23,6 @@ export default function Auth(props: AuthProps){
                 password: password
             }, {withCredentials: true})
                 .then((response) => {
-                    console.log(response.data);
-                    props.handleUserData(response.data);
                     navigate(`/user/${response.data.userInfo.username}`);
                 })
                 .catch((error):any => {
@@ -58,6 +49,7 @@ export default function Auth(props: AuthProps){
 
     useEffect(() => {
         checkUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

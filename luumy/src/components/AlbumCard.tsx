@@ -31,7 +31,7 @@ export default function AlbumCard(props:AlbumCardProps)
     const [sameUserAsURL, setSameUserAsURL] = useState(false);
 
    
-    const toggleUpdate = useContext(AlbumContext);
+    const {toggleUpdate} = useContext(AlbumContext);
     const {toggleSessionExpired} = useContext(SessionExpiredContext);
     const params = useParams();
 
@@ -46,6 +46,7 @@ export default function AlbumCard(props:AlbumCardProps)
 
     useEffect(() => {
         fetchUserData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleDelete = async () => {

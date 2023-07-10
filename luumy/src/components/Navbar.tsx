@@ -1,9 +1,9 @@
 import SearchIcon from '@mui/icons-material/Search';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Avatar, ClickAwayListener, Menu, MenuItem } from '@mui/material';
+import { Avatar, ClickAwayListener } from '@mui/material';
 
 import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 interface NavbarProps
 {

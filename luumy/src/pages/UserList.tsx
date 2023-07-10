@@ -3,10 +3,8 @@ import AlbumList from '../components/AlbumList';
 import AlbumCard from '../components/AlbumCard';
 import SearchModal from '../components/SearchModal';
 import SessionExpired from '../components/SessionExpired';
-import { useState, useEffect, createContext, useContext } from 'react';
-import { UserContext } from '../App';
+import { useState, useEffect, createContext } from 'react';
 import axios from 'axios';
-import { Avatar } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -53,6 +51,8 @@ export default function UserList()
         setOpenSessionExpired(toggle);
     }
 
+    const closeSearchModal = () => {setModalOpen(false);}
+
     // Runs on initial render or when user adds an album to their list
     // It also runs when a user adds an album to their list but are on a different page
     // i.e. recalls the api when it shouldnt have to
@@ -90,12 +90,13 @@ export default function UserList()
 
     useEffect(() => {
         checkValidUser();
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateAlbumList]);
 
     // When a user changes the sorting option, this useEffect will run
     useEffect(() => {
         handleUserAlbums(userAlbums);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sortCriteria, filterQuery])
 
     function filterItems(arr:albumObj[], query:string) {
@@ -163,7 +164,7 @@ export default function UserList()
     }
 
     return (
-        <AlbumContext.Provider value={toggleUpdate} >
+        <AlbumContext.Provider value={{toggleUpdate, closeSearchModal}} >
             <div className='h-full bg-background'>
                 <SessionExpiredContext.Provider value={{openSessionExpired, toggleSessionExpired}}>
 

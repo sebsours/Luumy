@@ -1,9 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
 import axios from 'axios';
-import { UserContext } from '../App';
 import { AlbumContext, SessionExpiredContext } from '../pages/UserList';
-import { useNavigate } from 'react-router-dom';
 
 interface AlbumDialogProps
 {
@@ -29,9 +27,8 @@ export default function AlbumDialog(props: AlbumDialogProps){
     // const [edit, setEdit] = useState(props.edit ? props.edit : false);
     const edit = props.edit ? props.edit : false;
 
-    const toggleUpdate = useContext(AlbumContext);
+    const {toggleUpdate, closeSearchModal} = useContext(AlbumContext);
     const {toggleSessionExpired} = useContext(SessionExpiredContext);
-    const navigate = useNavigate();
     
     // Runs as soon as album card is opened, calling the spotify api
     // to get the tracks for that album
@@ -52,6 +49,7 @@ export default function AlbumDialog(props: AlbumDialogProps){
 
 
         fetchAlbumTracks();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Handles getting the tracks of the album and puts them in the dropdown list
@@ -97,10 +95,12 @@ export default function AlbumDialog(props: AlbumDialogProps){
             .then((response) => {
                 props.closeDialog();
                 // Maybe have a checker here to see what page you are on to prevent unnecessary recalls to the api?
+                closeSearchModal();
                 toggleUpdate();
             })
             .catch((error) => {
                 props.closeDialog();
+                closeSearchModal();
                 toggleSessionExpired(true);
             });
         }
@@ -147,10 +147,11 @@ export default function AlbumDialog(props: AlbumDialogProps){
 
                         <div>
                             <label htmlFor="score" className='font-semibold'>Score</label>
-                            <input type="number" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='score' min={0} max={10}
+                            <input type="number" className='bg-slate-600 w-full rounded-sm text-neutral-100 p-1 focus:outline-none' id='score' autoComplete='off' min={0} max={10}
                             value={score !== -1 ? score : ''}
                             onChange={(e) => {setScore(e.target.valueAsNumber ? e.target.valueAsNumber : 0)}}
                             onBlur={(e) => {
+                                e.target.value = String(e.target.valueAsNumber * 1);
                                 if (e.target.value.match(/^(?:10|\d(?:\.\d+)?)$/)) {
                                     if (e.target.valueAsNumber % 1 !== 0){ 
                                         e.target.value = parseFloat(e.target.value).toFixed(1);
@@ -158,7 +159,7 @@ export default function AlbumDialog(props: AlbumDialogProps){
                                     setScore(e.target.valueAsNumber);
                                 } else {
                                     if (e.target.valueAsNumber < 0) {
-                                        e.target.value = '0';
+                                        e.target.value = '';
                                         setScore(0);
                                     }
                                     else if (e.target.valueAsNumber > 10) {
@@ -166,8 +167,7 @@ export default function AlbumDialog(props: AlbumDialogProps){
                                         setScore(10);
                                     }
                                 }
-                            }}
-                            />
+                            }}/>
                         </div>
                         
                         <div className='col-span-2'>

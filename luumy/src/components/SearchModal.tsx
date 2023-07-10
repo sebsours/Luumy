@@ -30,7 +30,6 @@ export default function SearchModal(props:SearchModalProps){
     }
 
     const handleGetAlbumInfo = (album: any) => {
-        // setCards(searchCards => []);
         album = album.albums;
         const searchResults:any = [];
         
@@ -56,9 +55,6 @@ export default function SearchModal(props:SearchModalProps){
         
         
     }
-
-    const handleClose = (e:any) => { 
-        if (e.target.id === 'close') props.closeModal()}
 
     if (!props.isVisible) return null;
 

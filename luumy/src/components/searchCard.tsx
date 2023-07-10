@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AlbumDialog from './SearchAlbumDialog';
 
 interface AlbumData
@@ -8,9 +8,7 @@ interface AlbumData
     images:any;
     name:string;
     release_date:string;
-    // Get name and href to get the genre here
     artists:any;
-
 }
 
 

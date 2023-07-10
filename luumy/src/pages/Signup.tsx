@@ -21,6 +21,7 @@ export default function Signup()
 
         if (username && email && password) {
             const url = 'http://localhost:8000/signup';
+            //eslint-disable-next-line
             if (!email.match('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')) {
                 setErrorEmail("Please enter a valid email");
                 return;
@@ -29,6 +30,7 @@ export default function Signup()
                 setErrorUser("Usernames must start with a letter and contain 6 characters")
                 return;
             }
+            //eslint-disable-next-line
             if (!password.match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{9,}$')) {
                 setErrorPass("Passwords must contain an uppercase character, lowercase character, a number, and at least 9 characters");
                 return;
@@ -88,6 +90,7 @@ export default function Signup()
 
     useEffect(() => {
         checkUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return(
