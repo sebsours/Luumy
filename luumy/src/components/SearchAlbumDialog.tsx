@@ -2,10 +2,10 @@ import { useState, useEffect, useContext } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
 import axios from 'axios';
 import { UserContext } from '../App';
-import { AlbumContext } from '../pages/UserList';
+import { AlbumContext, SessionExpiredContext } from '../pages/UserList';
 import { useNavigate } from 'react-router-dom';
 
-interface AlbumDialog
+interface AlbumDialogProps
 {
     open: boolean;
     closeDialog: () => void;
@@ -20,16 +20,17 @@ interface AlbumDialog
     edit?:boolean;
 }
 
-export default function AlbumDialog(props: AlbumDialog){
+export default function AlbumDialog(props: AlbumDialogProps){
 
     const [tracks, setTracks] = useState([]);
     const [favoriteTrack, setFavoriteTrack] = useState(props.favoriteTrack ? props.favoriteTrack : '');
     const [score, setScore] = useState(props.score ? props.score : -1);
     const [notes, setNotes] = useState(props.notes ? props.notes : '');
-    const [edit, setEdit] = useState(props.edit ? props.edit : false);
+    // const [edit, setEdit] = useState(props.edit ? props.edit : false);
+    const edit = props.edit ? props.edit : false;
 
-    const userData = useContext(UserContext);
     const toggleUpdate = useContext(AlbumContext);
+    const {toggleSessionExpired} = useContext(SessionExpiredContext);
     const navigate = useNavigate();
     
     // Runs as soon as album card is opened, calling the spotify api
@@ -45,8 +46,7 @@ export default function AlbumDialog(props: AlbumDialog){
             })
                 .then(response => handleGetAlbumTracks(response.data.tracks))
                 .catch(error => {
-                    console.log("This is the error", error);
-    
+                    console.log(error);
                 });
         }
 
@@ -67,7 +67,6 @@ export default function AlbumDialog(props: AlbumDialog){
         })
 
         setTracks((tracks) => [].concat(trackNames));
-        // console.log(tracks);
     }
 
     const handleSaveAlbum = async () => {
@@ -78,39 +77,31 @@ export default function AlbumDialog(props: AlbumDialog){
             notes: notes ? notes : null,
         };
 
-        
-
         if (edit)
         {
             const url = 'http://localhost:8000/album/editAlbum';
             
             await axios.put(url, saveAlbum, {withCredentials: true})
-                .then((response) => {
-                    console.log(response.data);
+                .then((response) => {   
                     props.closeDialog();
-
-
                     toggleUpdate();
                 })
                 .catch((error) => {
-                    console.log(error);
-                    navigate("/");
+                    props.closeDialog();
+                    toggleSessionExpired(true);
                 })
 
         } else {
             const url = 'http://localhost:8000/album/add';
             await axios.post(url, saveAlbum, {withCredentials: true})
             .then((response) => {
-                console.log(response.data);
                 props.closeDialog();
-                
                 // Maybe have a checker here to see what page you are on to prevent unnecessary recalls to the api?
                 toggleUpdate();
             })
             .catch((error) => {
-                console.log("I AM THE ERROR HAHAHA", error);
-                // Maybe change this
-                navigate("/");
+                props.closeDialog();
+                toggleSessionExpired(true);
             });
         }
        

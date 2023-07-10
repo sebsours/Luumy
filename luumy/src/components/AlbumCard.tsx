@@ -2,7 +2,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Tooltip } from '@mui/material';
 import AlbumDialog from './SearchAlbumDialog';
-import { AlbumContext } from '../pages/UserList';
+import { AlbumContext, SessionExpiredContext } from '../pages/UserList';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -32,17 +32,16 @@ export default function AlbumCard(props:AlbumCardProps)
 
    
     const toggleUpdate = useContext(AlbumContext);
+    const {toggleSessionExpired} = useContext(SessionExpiredContext);
     const params = useParams();
 
     async function fetchUserData()
     {
-        const url = 'http://localhost:8000/login/getCurrentUser';
+        const url = 'http://localhost:8000/user/getCurrentUser';
         await axios.get(url, {withCredentials: true})
             .then(res => {
                 setSameUserAsURL(params.username === res.data.username);
-            }).catch(reason => {
-                console.log(reason);
-            })
+            }).catch(reason => {})
     }
 
     useEffect(() => {
@@ -56,12 +55,13 @@ export default function AlbumCard(props:AlbumCardProps)
            withCredentials: true
         })
             .then((res) => {
-                console.log("Deleted Album");
+                setOpenOptions(false);
                 toggleUpdate();
             })
             .catch((error) => {
                 console.log(error);
-            })
+                toggleSessionExpired(true);
+            });
     }
 
     return (

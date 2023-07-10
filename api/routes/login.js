@@ -15,26 +15,27 @@ class AuthError extends Error {
 const router = express.Router();
 dotenv.config();
 
+// Logs in a user from a provided username and password
 router.post('/', async (req, res) => {
 
     try {
-        // req.body.username, req.body.password
         // Find the username, if you can't find the username then it doesn't exist in the database and it will throw an error
         // If you find the username, compare passwords to authenticate the users.
+        if (!req.body.password) {
+            throw new AuthError("No password provided", 400);
+        }
+
         const user = await User.findOne({ username: req.body.username });
-        // console.log(user);
         if (!user) {
-            throw new AuthError("User not found", 401);
+            throw new AuthError("User not found", 404);
         }
 
         const match = await bcrypt.compare(req.body.password, user.password);
 
         if (!match) {
-            throw new AuthError("Password does not match", 401);
+            throw new AuthError("Incorrect password", 401);
         }
 
-        // delete req.body.password;
-        // console.log(req.body.password);
         const userInfo = {
             username: user.username,
             email: user.email,
@@ -58,25 +59,17 @@ router.post('/', async (req, res) => {
 
     } catch (error) {
         res.status(error.statusCode).send(error.message);
-        // console.log(error.statusCode);
     }
 
 });
 
-router.get('/getCurrentUser', authenticateToken, async (req, res) => {
-    try {
-        const currentUser = req.user;
-        res.status(200).json(currentUser);
-
-    } catch (error) {
-        res.status(400).end();
-    }
-});
-
+// Logs out a user based on authentication token
 router.get('/logout', authenticateToken, async (req, res) => {
     try {
         res.clearCookie('token').end();
     } catch (error) {
+        // Error would come from the authenticateToken middleware, so it probably
+        // wouldn't reach here in this catch block
         res.status(400).end();
     }
 });

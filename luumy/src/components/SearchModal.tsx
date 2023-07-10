@@ -14,13 +14,9 @@ export default function SearchModal(props:SearchModalProps){
     const [search, setSearch] = useState('');
     const [searchCards, setCards] = useState([]);
 
-    // may need a useEffect to rerender the search results
-
     const handleSearch = async () => {
         if (search)
         {
-            // change for later
-
             const url = `http://localhost:8000/spotify/search/${search}`;
             await axios.get(url, {
                 headers: {
@@ -44,11 +40,12 @@ export default function SearchModal(props:SearchModalProps){
                 searchResults.push(
                     <div key={index}>
                         <SearchCard 
-                        albumID={`${item.id}`} 
-                        images={item.images} 
-                        name={`${item.name}`} 
-                        artists={item.artists} 
-                        release_date={`${item.release_date}`}/>
+                            albumID={`${item.id}`} 
+                            images={item.images} 
+                            name={`${item.name}`} 
+                            artists={item.artists} 
+                            release_date={`${item.release_date}`}
+                            />
                     </div>
                     
                 )

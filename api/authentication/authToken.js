@@ -20,14 +20,14 @@ export default function authenticateToken(req, res, next) {
     // });
     const token = req.cookies.token;
     try {
-        if (!token) throw Error("No token");
+        if (!token) throw Error("No token found");
 
         const user = jwt.verify(token, process.env.ACCESS_TOKEN);
         req.user = user;
         next();
     } catch (err) {
         console.log(err);
-        res.status(401).send("No token found");
+        res.status(401).send(err);
 
     }
 

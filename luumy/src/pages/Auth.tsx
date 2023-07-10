@@ -14,10 +14,14 @@ export default function Auth(props: AuthProps){
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [messageUsername, setMessageUsername] = useState<string | null>(null);
+    const [messagePassword, setMessagePassword] = useState<string | null>(null);
 
     // const userData = useContext(UserContext);
 
     const handleLogin = async () => {
+        setMessageUsername(null);
+        setMessagePassword(null);
         if (username && password)
         {
             const url = 'http://localhost:8000/login'
@@ -31,21 +35,24 @@ export default function Auth(props: AuthProps){
                     navigate(`/user/${response.data.userInfo.username}`);
                 })
                 .catch((error):any => {
-                    console.log(error);
+                    error.response.status === 404 ? setMessageUsername(error.response.data) : setMessagePassword(error.response.data);
                 })
             
+        }
+        else {
+            if (!username) setMessageUsername("Please input username");
+            if (!password) setMessagePassword("Please input valid password");
         }
     }
     
     async function checkUser()
     {
-        const url = 'http://localhost:8000/login/getCurrentUser';
+        const url = 'http://localhost:8000/user/getCurrentUser';
         await axios.get(url, {withCredentials: true})
             .then(res => {
                 navigate(`/user/${res.data.username}`);
-            }).catch(reason => {
-                console.log(reason);
             })
+            .catch(error => {})
     }
 
 
@@ -72,12 +79,14 @@ export default function Auth(props: AuthProps){
                 
                 <div className='flex flex-col mb-3 w-full items-start px-4 gap-1'>
                     <label htmlFor="username" className='font-medium'>Username</label>
+                    <span className='font-medium text-sm text-[#da0b0b]'>{messageUsername}</span>
                     <input id='username' type="text" placeholder='Username' autoComplete='none' onChange={(e) => setUsername(e.target.value)}
                     className='w-full text-accent rounded-sm p-1 focus:outline-none'/>
                 </div>
 
                 <div className='flex flex-col mb-3 w-full items-start px-4 gap-1'>
                     <label htmlFor="password" className='font-medium'>Password</label>
+                    <span className='font-medium text-sm text-[#da0b0b]'>{messagePassword}</span>
                     <input id='password' type="password" placeholder='Password' autoComplete='none' onChange={(e) => setPassword(e.target.value)}
                     className='w-full text-accent rounded-sm p-1 focus:outline-none'/>
                 </div>

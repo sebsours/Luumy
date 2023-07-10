@@ -26,11 +26,11 @@ export const getAuth = async () => {
         // console.log(response.data);
         return response.data.access_token;
     } catch (error) {
-
         console.log(error);
     }
 };
 
+// Search albums with a provided query and the spotify webapi
 router.get('/search/:query', async (req, res, next) => {
     // res.send(`Trying to find: ${req.params.query}`);
     const url = 'https://api.spotify.com/v1/search?q=' + req.params.query + '&type=album';
@@ -42,10 +42,14 @@ router.get('/search/:query', async (req, res, next) => {
         }
     })
         .then(response => res.send(response.data))
-        .catch(error => console.log(error));
-    // res.send(`Searching for... ${req.params.query}`);
+        .catch(error => {
+            console.log(error.code)
+
+            res.status(400).send(error);
+        });
 });
 
+// Get all the given album's tracks
 router.get('/albumTracks/:albumID', async (req, res, next) => {
     const url = 'https://api.spotify.com/v1/albums/' + req.params.albumID;
     await axios.get(url, {
@@ -55,7 +59,10 @@ router.get('/albumTracks/:albumID', async (req, res, next) => {
         }
     })
         .then(response => res.send(response.data))
-        .catch(error => console.log(error));
+        .catch(error => {
+            console.log(error);
+            res.status(400).send(error);
+        });
 });
 
 

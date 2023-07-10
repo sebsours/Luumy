@@ -2,6 +2,7 @@ import Navbar from '../components/Navbar';
 import AlbumList from '../components/AlbumList';
 import AlbumCard from '../components/AlbumCard';
 import SearchModal from '../components/SearchModal';
+import SessionExpired from '../components/SessionExpired';
 import { useState, useEffect, createContext, useContext } from 'react';
 import { UserContext } from '../App';
 import axios from 'axios';
@@ -28,6 +29,7 @@ interface Image
 }
 
 export const AlbumContext = createContext<any>(null);
+export const SessionExpiredContext = createContext<any>(null);
 
 export default function UserList()
 {   
@@ -38,12 +40,17 @@ export default function UserList()
     const [updateAlbumList, setUpdateAlbumList] = useState('toggle');
     const [sortCriteria, setSortCriteria] = useState('Score');
     const [filterQuery, setFilterQuery] = useState('');
+    const [openSessionExpired, setOpenSessionExpired] = useState(false);
 
     const params = useParams();
     const navigate = useNavigate();
 
     const toggleUpdate = () => {
         setUpdateAlbumList(updateAlbumList => (updateAlbumList === 'toggle' ? 'retoggle' : 'toggle'));
+    }
+
+    const toggleSessionExpired = (toggle:boolean) => {
+        setOpenSessionExpired(toggle);
     }
 
     // Runs on initial render or when user adds an album to their list
@@ -83,7 +90,6 @@ export default function UserList()
 
     useEffect(() => {
         checkValidUser();
-        
 
     }, [updateAlbumList]);
 
@@ -159,51 +165,54 @@ export default function UserList()
     return (
         <AlbumContext.Provider value={toggleUpdate} >
             <div className='h-full bg-background'>
+                <SessionExpiredContext.Provider value={{openSessionExpired, toggleSessionExpired}}>
+
                 
-                <Navbar openModal={() => setModalOpen(true)}/>
-               
-                    <div className='bg-background'>
-                        <div className='text-text mt-3 mb-1 lg:mb-10 lg:flex lg:justify-center'>
-                            <ul className='flex flex-col items-center gap-4 '>
-                                <li className='flex flex-col items-center'>
-                                    <div className='bg-gradient-to-b from-primary-button to-background h-48 w-36 flex justify-center items-center'>
-                                        <span className='font-semibold text-7xl'>{params.username?.slice(0,1).toUpperCase()}</span>
-                                    </div>
-                                    <span className='font-semibold text-lg'>{params.username}</span>
-                                </li>
+                    <SessionExpired open={openSessionExpired}/>
+                    <Navbar openModal={() => setModalOpen(true)}/>
+                
+                        <div className='bg-background'>
+                            <div className='text-text mt-3 mb-1 lg:mb-10 lg:flex lg:justify-center'>
+                                <ul className='flex flex-col items-center gap-4 '>
+                                    <li className='flex flex-col items-center'>
+                                        <div className='bg-gradient-to-b from-primary-button to-background h-48 w-36 flex justify-center items-center'>
+                                            <span className='font-semibold text-7xl'>{params.username?.slice(0,1).toUpperCase()}</span>
+                                        </div>
+                                        <span className='font-semibold text-lg'>{params.username}</span>
+                                    </li>
 
-                                <li className='w-full flex flex-col justify-center items-center sm:flex-row lg:justify-normal lg:items-end lg:ml-5'>
-                                    <div className='w-4/6 sm:w-2/5 lg:w-[280px] rounded border border-primary-button mb-3 lg:mb-0'> 
-                                        <SearchIcon fontSize='small' className='ml-1'></SearchIcon>
-                                        <input type="text" placeholder='Filter' onChange={(e) => {setFilterQuery(e.target.value)}} 
-                                        className='bg-transparent focus:outline-none py-1 px-1.5'/>
-                                    </div>
+                                    <li className='w-full flex flex-col justify-center items-center sm:flex-row lg:justify-normal lg:items-end lg:ml-5'>
+                                        <div className='w-4/6 sm:w-2/5 lg:w-[280px] rounded border border-primary-button mb-3 lg:mb-0'> 
+                                            <SearchIcon fontSize='small' className='ml-1'></SearchIcon>
+                                            <input type="text" placeholder='Filter' onChange={(e) => {setFilterQuery(e.target.value)}} 
+                                            className='bg-transparent focus:outline-none py-1 px-1.5'/>
+                                        </div>
 
-                                    <div className='sm:mx-7 pb-10 lg:pb-0.5'>
-                                        <label htmlFor="sort" className='font-normal text-xs'>Sort</label>
-                                        <select name="sort" id="sort" onChange={(e) => {setSortCriteria(e.target.value)}}
-                                        className='bg-primary-button w-full rounded-sm text-neutral-100 focus:outline-none p-1 mt-1'>
-                                            <option value="Score">Score</option>
-                                            <option value="Title">Title</option>
-                                            <option value="Artist">Artist</option>
-                                        </select>
-                                    </div>
+                                        <div className='sm:mx-7 pb-10 lg:pb-0.5'>
+                                            <label htmlFor="sort" className='font-normal text-xs'>Sort</label>
+                                            <select name="sort" id="sort" onChange={(e) => {setSortCriteria(e.target.value)}}
+                                            className='bg-primary-button w-full rounded-sm text-neutral-100 focus:outline-none p-1 mt-1'>
+                                                <option value="Score">Score</option>
+                                                <option value="Title">Title</option>
+                                                <option value="Artist">Artist</option>
+                                            </select>
+                                        </div>
+                                        
+                                        
+                                    </li>
                                     
-                                    
-                                </li>
-                                
-                            </ul>
-                        </div>
+                                </ul>
+                            </div>
 
 
-                        <div className='flex flex-row justify-evenly pb-10'>
-                            <AlbumList UserAlbumList={userAlbumsDivs}/>
+                            <div className='flex flex-row justify-evenly pb-10'>
+                                <AlbumList UserAlbumList={userAlbumsDivs}/>
+                            </div>
                         </div>
-                    </div>
-                
-                <SearchModal isVisible={modalOpen} closeModal={() => setModalOpen(false)}/>
-                
-                
+                    
+                    <SearchModal isVisible={modalOpen} closeModal={() => setModalOpen(false)}/>
+                    
+                </SessionExpiredContext.Provider>
             </div>
         </AlbumContext.Provider>
         

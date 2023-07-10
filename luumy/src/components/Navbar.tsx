@@ -20,8 +20,8 @@ export default function Navbar(props:NavbarProps)
 
     async function fetchUserData()
     {
-        console.log("Checking something");
-        const url = 'http://localhost:8000/login/getCurrentUser';
+        const url = 'http://localhost:8000/user/getCurrentUser';
+        
         await axios.get(url, {withCredentials: true})
             .then(res => {
                 setUsername(res.data.username);
@@ -40,7 +40,6 @@ export default function Navbar(props:NavbarProps)
         const url = 'http://localhost:8000/login/logout';
         await axios.get(url, {withCredentials: true})
             .then(res => {
-                console.log("Logout successful!");
                 navigate('/')
             }).catch(reason => {
                 console.log(reason);
